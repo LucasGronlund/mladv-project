@@ -40,12 +40,12 @@ def fullData():
 
 
 
-categories = ['acq','earn','corn','crude']
-numberOfTraining = [114,152,38,76]
-numberOfTesting = [25,40,15,10]
-train, test = loadData(categories,numberOfTraining,numberOfTesting)
-print(len(train), len(test))
+#categories = ['acq','earn','corn','crude']
+#numberOfTraining = [114,152,38,76]
+#numberOfTesting = [25,40,15,10]
+#train, test = loadData(categories,numberOfTraining,numberOfTesting)
+#print(len(train), len(test))
 
-print('Using fullData() takes a long time. We should maybe create a data dump for this?')
-train, test = fullData()
-print(len(train), len(test))
+#print('Using fullData() takes a long time. We should maybe create a data dump for this?')
+#train, test = fullData()
+#print(len(train), len(test))
