@@ -6,10 +6,10 @@ from sklearn.metrics import accuracy_score as a_s
 def _labelMaker(labels):
 	# Init labeling machine
 	mlb = MultiLabelBinarizer()
-	# Takes set of all possible labels, and creates a sparse matrix of 1/0 representations of class
+	# Takes set of all possible labels, and creates a sparse(?) matrix of 1/0 representations of class
 	return mlb.fit_transform(set(labels))
 
-def trainSVM(features, labels):
+def generateClassifier(features, labels):
 	'''
 		This uses sklearn SVM kit using a one vs one approach.
 		One-vs-one is more computationally intensive than One-vs-all (n(n-1)/2 vs n)
@@ -23,13 +23,13 @@ def trainSVM(features, labels):
 
 	clf = SVC(kernel='precomputed')
 
-	# Compute the kernel matrix
+	# Return the classifier, god I love how easy this is in python
 
 	return clf.fit(K,Y)
 
-def testSVM(features, classifier):
+def predict(features, classifier):
 	return classifier.predict(features)
 
 
-def accuracy(prediction,labels):
+def score(prediction,labels):
 	return a_s(_labelMaker(labels),prediction)
