@@ -14,6 +14,8 @@ def _cleanData(txt):
 def loadData(categories, nrTrain, nrTest, shuffle = True):
 	testData = []
 	trainingData = [] 
+	trainingLabel = []
+	testLabel = []
 	for i, cat in enumerate(categories):
 		ids = reuters.fileids(cat)
 		if shuffle:
@@ -21,11 +23,13 @@ def loadData(categories, nrTrain, nrTest, shuffle = True):
 		k = 0
 		while(len(trainingData) < sum(nrTrain[:i+1]) or len(testData) < sum(nrTest[:i+1])):
 			if ids[k].startswith('train') and len(trainingData) < sum(nrTrain[:i+1]): 
-				trainingData.append([ _cleanData(reuters.raw(ids[k])), cat])
+				trainingData.append( _cleanData(reuters.raw(ids[k])))
+				trainingLabel.append([cat])
 			elif ids[k].startswith('test') and len(testData) < sum(nrTest[:i+1]):
 				testData.append([ _cleanData(reuters.raw(ids[k])), cat]) 
+				testLabel.append([cat])
 			k += 1
-	return trainingData, testData
+	return trainingData, trainingLabel, testData, testLabel
 
 def fullData():
 	trainingData =[]
@@ -34,19 +38,8 @@ def fullData():
 	for i in ids:
 		if i.startswith('train'):
 			trainingData.append([_cleanData(reuters.raw(i)),reuters.categories(i)])
+			trainingLabel.append(reuters.categories(i))
 		elif i.startswith('test'):
 			testData.append([_cleanData(reuters.raw(i)),reuters.categories(i)])
-	return trainingData, testData
-
-
-
-#categories = ['acq','earn','corn','crude']
-#numberOfTraining = [114,152,38,76]
-#numberOfTesting = [25,40,15,10]
-#train, test = loadData(categories,numberOfTraining,numberOfTesting)
-#print(len(train), len(test))
-
-
-#print('Using fullData() takes a long time. We should maybe create a data dump for this?')
-#train, test = fullData()
-#print(len(train), len(test))
+			testLabel.append(reuters.categories(i))
+	return trainingData, trainingLabel, testData, testLabel
