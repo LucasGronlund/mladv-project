@@ -6,7 +6,7 @@ def _cleanData(txt):
 	txt = txt.lower()
 	#keep only words with letters (because f*ck numbers amirite?!)
 	txt = re.sub('[^a-z]',' ',txt)
-	txt = re.sub(' +', ' ',txt) # remove multiple blank spaces
+	txt = re.sub('\s\s+', ' ',txt) # remove multiple blank spaces
 	#get rid of stopwords in stopwordslist
 	txt_list = [w for w in txt.split(' ') if w not in stopwords.words('english')]
 	return ' '.join(txt_list)
@@ -45,6 +45,7 @@ def fullData():
 #numberOfTesting = [25,40,15,10]
 #train, test = loadData(categories,numberOfTraining,numberOfTesting)
 #print(len(train), len(test))
+
 
 #print('Using fullData() takes a long time. We should maybe create a data dump for this?')
 #train, test = fullData()
