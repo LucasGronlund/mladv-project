@@ -3,7 +3,7 @@ import kernel
 from sklearn.svm import SVC
 from sklearn.preprocessing import MultiLabelBinarizer
 from sklearn.multiclass import OneVsRestClassifier
-from sklearn.metrics import accuracy_score, f1_score
+from sklearn.metrics import precision_recall_fscore_support
 
 
 def _labelMaker(labels):
@@ -30,16 +30,15 @@ def generateClassifier(features, labels, n, l):
 	K = kernel.recursive_kernel(features,features,n,l)
 
 	clf = OneVsRestClassifier(SVC(kernel='precomputed'))
-	
+
 	# Return the classifier, god I love how easy this is in python
 	return clf.fit(K,Y)
 
 def predict(features,control, classifier, n,l):
 	K = kernel.recursive_kernel(features,control,n,l)
-	print('\n'*3)
-	print(K.shape)
 	return classifier.predict(K)
 
 
 def score(prediction,labels):
-		print('Accuracy: ' + str(accuracy_score(_labelMaker(labels),prediction)))
+		print('Scores: ' + str(precision_recall_fscore_support(_labelMaker(labels),prediction)))
+		# metrics.precision_recall_fscore_support(self.TestDocLabels, label_pred)
