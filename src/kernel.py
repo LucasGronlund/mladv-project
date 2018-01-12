@@ -5,7 +5,7 @@ from math import sqrt
 
 ##### NAIVE KERNEL #####
 
-def naiveKernel(data,k,l):
+def naive_kernel(data,k,l):
     
     #create all 'good' permutations, that is those which are possible
     perms=[];
@@ -139,10 +139,10 @@ def _k(s,t,n,l,kp):
     #There is no recursion necessary here since we already did it
     #when computing k_prime, the last 'layer' of k_prime
     #contains all the necessary values.
-    
+    a = 0
     for i in range(kp.shape[1]-1):
         for j in range(kp.shape[2]-1):
-            if(s[i]==t[j]):
+            if s[i] == t[j] : # Here we're the trubbles at!
                 ksum += kp[n-1][i][j];
                 
     return l**2*ksum;
@@ -165,22 +165,43 @@ def _get_normed_kernel_values(s,t,n,l):
     kst = _k(s,t,n,l,kstP)
     kss = _k(s,s,n,l,kssP);
     ktt = _k(t,t,n,l,kttP);
-    
+
     return kst/sqrt(kss*ktt)
 
 def recursive_kernel(s,t,n,l):
     if len(s) != len(t):
-        print('s != t , Kernel Matrix not square. This code is not adapted for that')
-        return 0
+        print('Number of strings are not equal, reverting to slower, non-square, computation of K')
+        K = np.zeros([len(s),len(t)])
+        kss = [ _k(s[i],s[i],n,l,_k_prime(s[i],s[i],n,l)) for i in range(len(s))]
+        ktt = [ _k(t[i],t[i],n,l,_k_prime(t[i],t[i],n,l)) for i in range(len(t))]
+        for i in tqdm(range(len(s))):
+            for j in tqdm(range(len(t))):
+                kstP = _k_prime(s[i],t[j],n,l);
+                kst = _k(s[i],t[j],n,l,kstP)
+                #Compute Kernel matrix K, we need to precompute it for
+                K[i,j] = kst/sqrt(kss[i]*ktt[j])
+        return K
 
     N = len(s)
     K = np.identity(N)
     
+    kss = [ _k(s[i],s[i],n,l,_k_prime(s[i],s[i],n,l)) for i in range(len(s))]
+
+
     for i in tqdm(range(N)):
         for j in tqdm(range(i+1,N)):
+            kstP = _k_prime(s[i],t[j],n,l);
+            kst = _k(s[i],t[j],n,l,kstP)
             #Compute Kernel matrix K, we need to precompute it for
-            k = _get_normed_kernel_values(s[i],t[j],n,l) 
+            k = kst/sqrt(kss[i]*kss[j])
             K[i,j] = k
             K[j,i] = k # Using this method to compute half of K and using that the matrix is semi definite
 
     return K
+
+
+#### APPROXIMATIVE KERNEL IMPLEMENTATION #####
+
+def approximative_kernel():
+    print ('not yet implemented')
+    return 0

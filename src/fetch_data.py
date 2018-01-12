@@ -26,7 +26,7 @@ def loadData(categories, nrTrain, nrTest, shuffle = True):
 				trainingData.append( _cleanData(reuters.raw(ids[k])))
 				trainingLabel.append([cat])
 			elif ids[k].startswith('test') and len(testData) < sum(nrTest[:i+1]):
-				testData.append([ _cleanData(reuters.raw(ids[k])), cat]) 
+				testData.append( _cleanData(reuters.raw(ids[k]))) 
 				testLabel.append([cat])
 			k += 1
 	return trainingData, trainingLabel, testData, testLabel
