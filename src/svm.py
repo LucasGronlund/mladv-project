@@ -41,4 +41,3 @@ def predict(features,control, classifier, n,l):
 
 def score(prediction,labels):
 		print('Scores: ' + str(precision_recall_fscore_support(_labelMaker(labels),prediction)))
-		# metrics.precision_recall_fscore_support(self.TestDocLabels, label_pred)

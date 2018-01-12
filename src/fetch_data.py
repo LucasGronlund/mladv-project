@@ -42,4 +42,5 @@ def fullData():
 		elif i.startswith('test'):
 			testData.append([_cleanData(reuters.raw(i)),reuters.categories(i)])
 			testLabel.append(reuters.categories(i))
+
 	return trainingData, trainingLabel, testData, testLabel

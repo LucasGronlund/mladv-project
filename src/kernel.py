@@ -139,10 +139,10 @@ def _k(s,t,n,l,kp):
     #There is no recursion necessary here since we already did it
     #when computing k_prime, the last 'layer' of k_prime
     #contains all the necessary values.
-    a = 0
+
     for i in range(kp.shape[1]-1):
         for j in range(kp.shape[2]-1):
-            if s[i] == t[j] : # Here we're the trubbles at!
+            if s[i] == t[j] : 
                 ksum += kp[n-1][i][j];
                 
     return l**2*ksum;
@@ -172,12 +172,11 @@ def recursive_kernel(s,t,n,l):
     if len(s) != len(t):
         print('Number of strings are not equal, reverting to slower, non-square, computation of K')
         K = np.zeros([len(s),len(t)])
-        kss = [ _k(s[i],s[i],n,l,_k_prime(s[i],s[i],n,l)) for i in range(len(s))]
-        ktt = [ _k(t[i],t[i],n,l,_k_prime(t[i],t[i],n,l)) for i in range(len(t))]
-        for i in tqdm(range(len(s))):
-            for j in tqdm(range(len(t))):
-                kstP = _k_prime(s[i],t[j],n,l);
-                kst = _k(s[i],t[j],n,l,kstP)
+        kss = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in s]
+        ktt = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in t]
+        for i,ss in enumerate(tqdm(s)):
+            for j,tt in enumerate(tqdm(t)):
+                kst = _k(ss,tt,n,l,_k_prime(ss,tt,n,l))
                 #Compute Kernel matrix K, we need to precompute it for
                 K[i,j] = kst/sqrt(kss[i]*ktt[j])
         return K
@@ -185,8 +184,7 @@ def recursive_kernel(s,t,n,l):
     N = len(s)
     K = np.identity(N)
     
-    kss = [ _k(s[i],s[i],n,l,_k_prime(s[i],s[i],n,l)) for i in range(len(s))]
-
+    kss = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in s]
 
     for i in tqdm(range(N)):
         for j in tqdm(range(i+1,N)):
