@@ -31,7 +31,7 @@ def mostFrequentFeatures(dataset, k, numbTop,prints = False):
         scores = np.zeros(len(alphabet)**k)
 
         # Calculate occurance of each feature in dataset
-        for document in tqdm(dataset):    
+        for document in tqdm(dataset,desc = 'Document'):    
             for index, feature in tqdm(enumerate(features)):
                 scores[index] += document.count(feature)
         print('Done')
