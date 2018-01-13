@@ -35,6 +35,8 @@ def loadData(categories, nrTrain, nrTest, shuffle = True):
 def fullData():
 	trainingData =[]
 	testData =[] 
+	testLabel = []
+	trainingLabel = []
 	ids = reuters.fileids()
 	for i in ids:
 		if i.startswith('train'):
