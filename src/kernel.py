@@ -218,7 +218,7 @@ def approximative_kernel(x,z,s,n,l):
     kzz = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in z]
     for i,xx in enumerate(tqdm(x)):
         for j,zz in enumerate(tqdm(z)):
-            for k,ss in enumerate(s):
+            for k,ss in enumerate(tqdm(s)):
                 kxs = _k(xx,ss,n,l,_k_prime(xx,ss,n,l))
                 kzs = _k(zz,ss,n,l,_k_prime(zz,ss,n,l)) 
                 K[i,j] += (kzs*kxs)/(kss[k]*sqrt(kzz[j]*kxx[i]))
