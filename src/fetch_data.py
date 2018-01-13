@@ -1,5 +1,6 @@
 from nltk.corpus import reuters, stopwords
 import random, re
+import sys
 
 def _cleanData(txt):
 	#lowercase
@@ -38,6 +39,7 @@ def fullData():
 	testLabel = []
 	trainingLabel = []
 	ids = reuters.fileids()
+	c=0
 	for i in ids:
 		if i.startswith('train'):
 			trainingData.append(_cleanData(reuters.raw(i)))
@@ -45,5 +47,8 @@ def fullData():
 		elif i.startswith('test'):
 			testData.append(_cleanData(reuters.raw(i)))
 			testLabel.append(reuters.categories(i))
+		c=c+1;
+		sys.stdout.write(repr(len(ids)-c)+'\r')
+		sys.stdout.flush()
 
 	return trainingData, trainingLabel, testData, testLabel
