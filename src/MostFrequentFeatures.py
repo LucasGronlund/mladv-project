@@ -7,6 +7,7 @@
 import itertools as it
 import numpy as np
 from tqdm import tqdm 
+import sys
 
 def mostFrequentFeatures(dataset, k, numbTop,prints = False):
     if prints == True:
@@ -56,7 +57,7 @@ def mostFrequentFeatures(dataset, k, numbTop,prints = False):
         # Generate all features of length k and store in features
         alphabet = 'abcdefghijklmnopqrstuvwxyz '
         tempFeatures = it.product(alphabet,repeat = k) # results in ('a','a') etc
-
+        
         # Need to concatinate to 'aa' etc
         features = []
         for index, feature in enumerate(tempFeatures):
@@ -64,15 +65,19 @@ def mostFrequentFeatures(dataset, k, numbTop,prints = False):
             for w in feature:
                 currentFeature += w
             features.append(currentFeature)
-
+        print("done with features")
         # Some place to store number of occurances and finaly the most frequent features
         scores = np.zeros(len(alphabet)**k)
 
         # Calculate occurance of each feature in dataset
-        for document in dataset:    
+        c=0;
+        for document in dataset:
+            c=c+1;
+            sys.stdout.write(repr(len(dataset)-c)+'\r')
+            sys.stdout.flush()
             for index, feature in enumerate(features):
                 scores[index] += document.count(feature)
-
+        print("done with occurance")
         # Find the most occuring features and return these in order
         topFeatures = []
         topFeatureScores =  []
