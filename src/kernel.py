@@ -201,7 +201,7 @@ def approximative_kernel(x,z,s,n,l):
     N = len(x)
     kss = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in s]
     kxx = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in x]               
-    if N == len(z)+1:
+    if N == len(z):
         K = np.identity(N)
         print('Square kernel matrix generated')
         for i,xx in enumerate(x):
