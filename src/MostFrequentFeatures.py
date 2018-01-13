@@ -49,7 +49,7 @@ def mostFrequentFeatures(dataset, k, numbTop,prints = False):
         print('Done')
         
         print(topFeatures)
-        print(topFeatureScores)
+        print(topFeastureScores)
         
         
     if prints == False:

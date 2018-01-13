@@ -40,7 +40,6 @@ def naive_kernel(data,k,l):
     return fi;
 
                 
-
 def _recursiveShit(currInd,topVal,prevVal,k,tmpSum):
     #bad recursion, but it works
     
@@ -58,9 +57,7 @@ def _recursiveShit(currInd,topVal,prevVal,k,tmpSum):
             if(i>prevVal):
                 tmpSum = _recursiveShit(currInd[1:],topVal,i,k-1,tmpSum);
         return tmpSum
-            
-            
-    
+                
 
 def _find(str, ch):
     #_find indexes of characters in string
