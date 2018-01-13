@@ -2,6 +2,7 @@
 # coding: utf-8
 
 # In[21]:
+import numpy as np
 
 
 def alignment(A, B):
