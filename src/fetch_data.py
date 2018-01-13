@@ -40,10 +40,10 @@ def fullData():
 	ids = reuters.fileids()
 	for i in ids:
 		if i.startswith('train'):
-			trainingData.append([_cleanData(reuters.raw(i)),reuters.categories(i)])
+			trainingData.append(_cleanData(reuters.raw(i)))
 			trainingLabel.append(reuters.categories(i))
 		elif i.startswith('test'):
-			testData.append([_cleanData(reuters.raw(i)),reuters.categories(i)])
+			testData.append(_cleanData(reuters.raw(i)))
 			testLabel.append(reuters.categories(i))
 
 	return trainingData, trainingLabel, testData, testLabel
