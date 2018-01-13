@@ -200,6 +200,16 @@ def recursive_kernel(s,t,n,l):
 
 #### APPROXIMATIVE KERNEL IMPLEMENTATION #####
 
-def approximative_kernel():
-    print ('not yet implemented')
-    return 0
+def approximative_kernel(x,z,s,n,l):
+    approxK = np.zeros([len(x),len(z)])
+    kxx = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in x]
+    kzz = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in z]
+    kss = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in s]
+
+    for i,xx in enumerate(tqdm(x)):
+        for j,zz in enumerate(tqdm(z)):
+            for k,ss in enumerate(s):
+                kxs = _k(xx,ss,n,l,_k_prime(xx,ss,n,l))
+                kzs = _k(zz,ss,n,l,_k_prime(zz,ss,n,l)) 
+                approxK(i,j) += (kzs*kxs)/(kss[k]*sqrt(kzz[i]*kxx[j]))
+    return approxK
