@@ -65,31 +65,52 @@ def mostFrequentFeatures(dataset, k, numbTop,prints = False):
             for w in feature:
                 currentFeature += w
             features.append(currentFeature)
-        print("done with features")
+
         # Some place to store number of occurances and finaly the most frequent features
         scores = np.zeros(len(alphabet)**k)
 
         # Calculate occurance of each feature in dataset
         c=0;
+        cutoff = 200;
         for document in dataset:
             c=c+1;
-            sys.stdout.write(repr(len(dataset)-c)+'\r')
-            sys.stdout.flush()
+
             for index, feature in enumerate(features):
                 scores[index] += document.count(feature)
-        print("done with occurance")
+
+            possibleDelete = [];
+            if(c<cutoff): print(repr(cutoff-c)+" documents until feature removal.",end="\r",flush=True)
+            if(c>cutoff):
+                print("feature rmoval done. There are " + repr(len(features)) + " features remaining and " +
+                      repr(len(dataset)-c) + " documents left.",
+                      end="\r",flush=True)
+            if(c==cutoff):
+                for i,val in enumerate(scores):
+                    if(val<1):
+                        possibleDelete.append(True);
+                    else:
+                        possibleDelete.append(False);
+
+                print("documents left: " + repr(len(dataset)-c) +
+                                 ". deleting " + repr(np.sum(possibleDelete)) + " features. "+
+                                 "current features: " + repr(len(features)),end="\r",flush=True)
+                sys.stdout.write("\033[F") #back to previous line
+                sys.stdout.write("\033[K") #clear line
+                scores = scores[~np.array(possibleDelete)]
+                features = np.array(features);
+                features = np.asarray(features[~np.array(possibleDelete)])
+
+        
+        print("\n total amount of features extracted: " + repr(len(features)))
         # Find the most occuring features and return these in order
         topFeatures = []
         topFeatureScores =  []
-        #for i in range(numbTop):
-        #    maxIndex = np.argmax(scores)
-        #    topFeatures.append(features[maxIndex]) #finds most frequent feature
-        #    topFeatureScores.append(max(scores)) #score of that feature
-        #    scores[maxIndex] = -1 # makes sure same feature does not come up again
-        scores = scores.argsort()[-len(scores):][::-1]
-        features = np.array(features)
-        topFeatures = features[scores][:numbTop]
-        topFeatureScores = scores[numbTop]
-        
+        for i in range(numbTop):
+            maxIndex = np.argmax(scores)
+            topFeatures.append(features[maxIndex]) #finds most frequent feature
+            topFeatureScores.append(max(scores)) #score of that feature
+            scores[maxIndex] = -1 # makes sure same feature does not come up again
+        print("\n done.")
     
     return topFeatures, topFeatureScores
+
