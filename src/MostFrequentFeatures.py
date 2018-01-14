@@ -89,7 +89,7 @@ def mostFrequentFeatures(dataset, k, numbTop,prints = False):
         scores = scores.argsort()[-len(scores):][::-1]
         features = np.array(features)
         topFeatures = features[scores][:numbTop]
-        topFeatureScores = scores[numbTop]
+        topFeatureScores = scores[:numbTop]
         
     
     return topFeatures, topFeatureScores
