@@ -244,14 +244,13 @@ def wk(s,t):
 #### NGK ####
 
 def ngk(s,t,n): 
-    from sklearn.feature_extraction.text import CountVectorizer,TfidfTransformer
-    vectorizer = CountVectorizer(analyzer = 'char',ngram_range(n,n))
+    from sklearn.feature_extraction.text import HashingVectorizer
+    vectorizer = HashingVectorizer(analyzer = 'char',ngram_range(n,n), norm = 'l2')
     # Generate n-grams 
     s_grams = vectorizer.fit_transform(s)
     t_grams = vectorizer.fit_transform(t)
     #Normalize
-    s_feature_vector = TfidfTransformer.fit_transform(s_grams).toarray()
-    t_feature_vector = TfidfTransformer.fit_transform(t_grams).toarray()
-    return s_feature_vector.dot(t_feature_vector) #Compute the kernel and return
+
+    return s_grams.dot(t_grams) #Compute the kernel and return
 
 
