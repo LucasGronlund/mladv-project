@@ -201,15 +201,14 @@ def approximative_kernel(x,z,s,n,l):
     N = len(x)
     kss = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in s]
     kxx = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in x]               
-    if N == len(z):
+    if hash(tuple(x)) == hash(tuple(z)):
         K = np.identity(N)
         print('Square kernel matrix generated')
         for i,xx in enumerate(x):
-            for j in range(i+1,N):
+            for j in range(i,N):
                 for k,ss in enumerate(s):
                     kxs = _k(xx,ss,n,l,_k_prime(xx,ss,n,l))
-                    kzs = _k(z[j],ss,n,l,_k_prime(z[j],ss,n,l)) 
-                    k = (kzs*kxs)/(kss[k]*sqrt(kxx[j]*kxx[i]))
+                    k = (kxs*kxs)/(kss[k]*sqrt(kxx[j]*kxx[i]))
                     K[i,j] += k
                     K[j,i] += k
         return K   
