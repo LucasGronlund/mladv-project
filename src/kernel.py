@@ -243,32 +243,15 @@ def wk(s,t):
 
 #### NGK ####
 
-def ngk(document,k): 
-        # Generate all features of length k and store in features
-        alphabet = 'abcdefghijklmnopqrstuvwxyz '
-        tempFeatures = it.product(alphabet,repeat = k) # results in ('a','a') etc
-        
-        # Need to concatinate to 'aa' etc
-        features = []
-        for index, feature in enumerate(tempFeatures):
-            currentFeature = ''
-            for w in feature:
-                currentFeature += w
-            features.append(currentFeature)
-        print("done with features")
-        # Some place to store number of occurances and finaly the most frequent features
-        scores = np.zeros(len(alphabet)**k)
-
-        # Calculate occurance of each feature in dataset
-        c = 0
-        for document in dataset:
-            c += 1
-            sys.stdout.write(repr(len(dataset)-c)+'\r')
-            sys.stdout.flush()
-            for index, feature in enumerate(features):
-                scores[index] += document.count(feature)
-        print("done with occurance")
-    
-    return features, scores/np.sum(scores)
+def ngk(s,t,n): 
+    from sklearn.feature_extraction.text import CountVectorizer,TfidfTransformer
+    vectorizer = CountVectorizer(analyzer = 'char',ngram_range(n,n))
+    # Generate n-grams 
+    s_grams = vectorizer.fit_transform(s)
+    t_grams = vectorizer.fit_transform(t)
+    #Normalize
+    s_feature_vector = TfidfTransformer.fit_transform(s_grams).toarray()
+    t_feature_vector = TfidfTransformer.fit_transform(t_grams).toarray()
+    return s_feature_vector.dot(t_feature_vector) #Compute the kernel and return
 
 
