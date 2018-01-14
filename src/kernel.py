@@ -181,7 +181,7 @@ def recursive_kernel(s,t,n,l):
     N = len(s)
     K = np.identity(N)
     
-    kss = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in s]
+    kss = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in tqdm(s)]
 
     for i in tqdm(range(N)):
         for j in tqdm(range(i+1,N)):

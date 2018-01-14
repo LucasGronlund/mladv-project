@@ -18,6 +18,18 @@ def create100FirstKernelValues(I_WANT_TO_CREATE_NEW_VALUES=False):
         kerns = os.path.join(cwd,'first100KernelValsCptr6.csv')
         np.savetxt(kerns, kernelValues, delimiter=",")
 
+def create100FirstRecursiveKernel(I_WANT_TO_CREATE_NEW_VALUES=False):
+    if(I_WANT_TO_CREATE_NEW_VALUES):
+        data = fd.nrData(100);
+        n=3;
+        l=0.5;
+        kernel = k.recursive_kernel(data,data,n,l);
+
+        cwd = os.getcwd()+'\..\data\precomp_kernel_values';
+
+        kerns = os.path.join(cwd,'first100RecursiveKernelCptr6.csv')
+        np.savetxt(kerns, kernel, delimiter=",")
+
 def create100FirstKernelGramValues(I_WANT_TO_CREATE_NEW_VALUES=False):
     if(I_WANT_TO_CREATE_NEW_VALUES):
         data = fd.nrData(100);
