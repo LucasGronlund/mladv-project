@@ -166,10 +166,10 @@ def _get_normed_kernel_values(s,t,n,l):
     return kst/sqrt(kss*ktt)
 
 def recursive_kernel(s,t,n,l):
-    if len(s) != len(t):
+    kss = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in s]
+    if hash(tuple(s)) != hash(tuple(t)):
         print('Number of strings are not equal, reverting to slower, non-square, computation of K')
-        K = np.zeros([len(s),len(t)])
-        kss = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in s]
+        K = np.zeros([len(s),len(t)])        
         ktt = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in t]
         for i,ss in enumerate(tqdm(s)):
             for j,tt in enumerate(tqdm(t)):
@@ -181,8 +181,6 @@ def recursive_kernel(s,t,n,l):
     N = len(s)
     K = np.identity(N)
     
-    kss = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in tqdm(s)]
-
     for i in tqdm(range(N)):
         for j in tqdm(range(i+1,N)):
             kstP = _k_prime(s[i],t[j],n,l);
@@ -233,3 +231,26 @@ def kernelValuesListChptr6(x,s,n,l):
         for j in tqdm(range(len(s))):
             Kxs[i][j]=_k(x[i],s[j],n,l,_k_prime(x[i],s[j],n,l))
     return Kxs
+
+
+
+#### WK ####
+
+def wk(s,t):
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    vec = TfidfVectorizer()
+    return vec.fit_transform(s).toarray().dot(vec.fit_transform(t).toarray())
+
+#### NGK ####
+
+def ngk(s,t,n): 
+    from sklearn.feature_extraction.text import HashingVectorizer
+    vectorizer = HashingVectorizer(analyzer = 'char',ngram_range(n,n), norm = 'l2')
+    # Generate n-grams 
+    s_grams = vectorizer.fit_transform(s)
+    t_grams = vectorizer.fit_transform(t)
+    #Normalize
+
+    return s_grams.dot(t_grams) #Compute the kernel and return
+
+
