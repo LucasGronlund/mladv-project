@@ -40,7 +40,6 @@ def naive_kernel(data,k,l):
     return fi;
 
                 
-
 def _recursiveShit(currInd,topVal,prevVal,k,tmpSum):
     #bad recursion, but it works
     
@@ -58,9 +57,7 @@ def _recursiveShit(currInd,topVal,prevVal,k,tmpSum):
             if(i>prevVal):
                 tmpSum = _recursiveShit(currInd[1:],topVal,i,k-1,tmpSum);
         return tmpSum
-            
-            
-    
+                
 
 def _find(str, ch):
     #_find indexes of characters in string
@@ -204,7 +201,7 @@ def approximative_kernel(x,z,s,n,l):
     N = len(x)
     kss = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in s]
     kxx = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in x]               
-    if N == len(z)+1:
+    if N == len(z):
         K = np.identity(N)
         print('Square kernel matrix generated')
         for i,xx in enumerate(x):

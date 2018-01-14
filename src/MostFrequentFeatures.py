@@ -49,7 +49,7 @@ def mostFrequentFeatures(dataset, k, numbTop,prints = False):
         print('Done')
         
         print(topFeatures)
-        print(topFeatureScores)
+        print(topFeastureScores)
         
         
     if prints == False:
@@ -81,19 +81,15 @@ def mostFrequentFeatures(dataset, k, numbTop,prints = False):
         # Find the most occuring features and return these in order
         topFeatures = []
         topFeatureScores =  []
-
-        #Commented out this bit //Lucas
         #for i in range(numbTop):
         #    maxIndex = np.argmax(scores)
         #    topFeatures.append(features[maxIndex]) #finds most frequent feature
         #    topFeatureScores.append(max(scores)) #score of that feature
         #    scores[maxIndex] = -1 # makes sure same feature does not come up again
-
-        #This is much faster //Lucas
         scores = scores.argsort()[-len(scores):][::-1]
         features = np.array(features)
         topFeatures = features[scores][:numbTop]
-        topFeatureScores = scores[:numbTop]
+        topFeatureScores = scores[numbTop]
         
     
     return topFeatures, topFeatureScores
