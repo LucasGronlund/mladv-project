@@ -227,3 +227,10 @@ def approximative_kernel(x,z,s,n,l):
 def kernelValuesList(x,n,l):
     kVal = [_k(i,i,n,l,_k_prime(i,i,n,l)) for i in tqdm(x)]
     return kVal
+
+def kernelValuesListChptr6(x,s,n,l):
+    Kxs = np.zeros([len(x),len(s)]);
+    for i in tqdm(range(len(x))):
+        for j in range(len(s)):
+            Kxs[i][j]=_k(x[i],s[j],n,l,_k_prime(x[i],s[j],n,l))
+    return Kxs

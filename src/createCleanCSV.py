@@ -1,5 +1,6 @@
 import fetch_data as fd
 import MostFrequentFeaturesWithRemoval as mff
+import MostFrequentFeatures as mf
 import numpy as np
 import os
 import kernel as k
@@ -16,6 +17,38 @@ def create100FirstKernelValues(I_WANT_TO_CREATE_NEW_VALUES=False):
 
         kerns = os.path.join(cwd,'first100KernelValsCptr6.csv')
         np.savetxt(kerns, kernelValues, delimiter=",")
+
+def create100FirstKernelGramValues(I_WANT_TO_CREATE_NEW_VALUES=False):
+    if(I_WANT_TO_CREATE_NEW_VALUES):
+        data = fd.nrData(100);
+        n=3;
+        l=0.5;
+
+        nGrams, scores = mf.mostFrequentFeatures(data,n,10000)
+        
+        kernelgramValues = k.kernelValuesListChptr6(data,nGrams,n,l)
+
+        cwd = os.getcwd()+'\..\data\precomp_kernel_values';
+
+        kerns = os.path.join(cwd,'kernelGramMatrixCptr6.csv')
+        np.savetxt(kerns, kernelgramValues, delimiter=",")
+
+def create10000FirstnGramKernelValues(I_WANT_TO_CREATE_NEW_VALUES=False):
+    if(I_WANT_TO_CREATE_NEW_VALUES):
+        data = fd.nrData(100);
+        n=3;
+        l=0.5;
+        
+        nGrams, scores = mf.mostFrequentFeatures(data,n,10000)
+        nGramVals = k.kernelValuesList(nGrams,n,l)
+        
+        cwd = os.getcwd()+'\..\data\precomp_kernel_values';
+
+        ngrams = os.path.join(cwd,'first10000nGramValsCptr6.csv')
+        np.savetxt(ngrams, nGramVals, delimiter=",")
+
+        ngrams = os.path.join(cwd,'first10000nGramsCptr6.csv')
+        np.savetxt(ngrams, nGrams, delimiter=",",fmt='%s')
 
 def createCleanedDataCSV(I_WANT_TO_CREATE_NEW_VALUES=False):
 
