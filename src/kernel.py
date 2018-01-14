@@ -231,6 +231,6 @@ def kernelValuesList(x,n,l):
 def kernelValuesListChptr6(x,s,n,l):
     Kxs = np.zeros([len(x),len(s)]);
     for i in tqdm(range(len(x))):
-        for j in range(len(s)):
+        for j in tqdm(range(len(s))):
             Kxs[i][j]=_k(x[i],s[j],n,l,_k_prime(x[i],s[j],n,l))
     return Kxs
