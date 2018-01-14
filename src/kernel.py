@@ -166,10 +166,10 @@ def _get_normed_kernel_values(s,t,n,l):
     return kst/sqrt(kss*ktt)
 
 def recursive_kernel(s,t,n,l):
-    if len(s) != len(t):
+    kss = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in s]
+    if hash(tuple(s)) != hash(tuple(t)):
         print('Number of strings are not equal, reverting to slower, non-square, computation of K')
-        K = np.zeros([len(s),len(t)])
-        kss = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in s]
+        K = np.zeros([len(s),len(t)])        
         ktt = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in t]
         for i,ss in enumerate(tqdm(s)):
             for j,tt in enumerate(tqdm(t)):
@@ -181,8 +181,6 @@ def recursive_kernel(s,t,n,l):
     N = len(s)
     K = np.identity(N)
     
-    kss = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in s]
-
     for i in tqdm(range(N)):
         for j in tqdm(range(i+1,N)):
             kstP = _k_prime(s[i],t[j],n,l);
@@ -233,3 +231,44 @@ def kernelValuesListChptr6(x,s,n,l):
         for j in tqdm(range(len(s))):
             Kxs[i][j]=_k(x[i],s[j],n,l,_k_prime(x[i],s[j],n,l))
     return Kxs
+
+
+
+#### WK ####
+
+def wk(s,t):
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    vec = TfidfVectorizer()
+    return vec.fit_transform(s).toarray().dot(vec.fit_transform(t).toarray())
+
+#### NGK ####
+
+def ngk(document,k): 
+        # Generate all features of length k and store in features
+        alphabet = 'abcdefghijklmnopqrstuvwxyz '
+        tempFeatures = it.product(alphabet,repeat = k) # results in ('a','a') etc
+        
+        # Need to concatinate to 'aa' etc
+        features = []
+        for index, feature in enumerate(tempFeatures):
+            currentFeature = ''
+            for w in feature:
+                currentFeature += w
+            features.append(currentFeature)
+        print("done with features")
+        # Some place to store number of occurances and finaly the most frequent features
+        scores = np.zeros(len(alphabet)**k)
+
+        # Calculate occurance of each feature in dataset
+        c = 0
+        for document in dataset:
+            c += 1
+            sys.stdout.write(repr(len(dataset)-c)+'\r')
+            sys.stdout.flush()
+            for index, feature in enumerate(features):
+                scores[index] += document.count(feature)
+        print("done with occurance")
+    
+    return features, scores/np.sum(scores)
+
+
