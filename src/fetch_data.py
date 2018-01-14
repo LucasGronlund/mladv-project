@@ -52,3 +52,18 @@ def fullData():
 		sys.stdout.flush()
 
 	return trainingData, trainingLabel, testData, testLabel
+
+def nrData(nr):
+	data =[]
+	ids = reuters.fileids()
+	c=0
+	for i in ids:
+
+                data.append(_cleanData(reuters.raw(i)))
+
+                if(len(data)==nr): break
+                c=c+1;
+                sys.stdout.write(repr(nr-c)+'\r')
+                sys.stdout.flush()
+                
+	return data

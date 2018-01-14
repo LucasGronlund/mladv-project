@@ -223,3 +223,7 @@ def approximative_kernel(x,z,s,n,l):
                 kzs = _k(zz,ss,n,l,_k_prime(zz,ss,n,l)) 
                 K[i,j] += (kzs*kxs)/(kss[k]*sqrt(kzz[j]*kxx[i]))
     return K
+
+def kernelValuesList(x,n,l):
+    kVal = [_k(i,i,n,l,_k_prime(i,i,n,l)) for i in tqdm(x)]
+    return kVal
