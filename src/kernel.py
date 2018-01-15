@@ -255,28 +255,27 @@ def wk(s,t):
 #### NGK ####
 
 def ngk(s,t,n): 
-    from sklearn.feature_extraction.text import CountVectorizer
-    vectorizer = CountVectorizer(analyzer = 'char', ngram_range=(n,n))
-    # Generate n-grams 
     
-    #t_grams = vectorizer.fit_transform(t)
-    #s_grams = vectorizer.transform(s)
-    def _Ngrams(s,n):
-        return set(s[i:i+n] for i in range(len(s)-n+1))
-        
-
     #Normalize
     K = np.zeros((len(s),len(t)))
-
+    
     def _normalize(s,t,n):
-        s1 = _Ngrams(s,n)
-        t1 = _Ngrams(t,n)
-        if len(s1|t1) == 0:
+        p1 = set([s[i:i+n] for i in range(len(s)-n+1)])
+        p2 = set([t[i:i+n] for i in range(len(t)-n+1)])
+
+        same = 0.0;
+        unique = 0.0;
+
+        same = len(p1 & p2)
+        unique = len(p1 | p2)
+        if unique == 0:
             return 1.0
-        return len(s1 & t1)/len(s1|t1)
+        return same/unique
 
     for i in range(len(s)):
+        
         for j in range(len(t)):
+            
             K[i][j] = _normalize(s[i],t[j],n)
     return K
 
