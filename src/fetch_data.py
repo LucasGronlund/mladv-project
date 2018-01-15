@@ -25,11 +25,12 @@ def loadData(categories, nrTrain, nrTest, shuffle = True):
 		while(len(trainingData) < sum(nrTrain[:i+1]) or len(testData) < sum(nrTest[:i+1])):
 			if ids[k].startswith('train') and len(trainingData) < sum(nrTrain[:i+1]): 
 				trainingData.append( _cleanData(reuters.raw(ids[k])))
-				trainingLabel.append([cat])
-				# trainingLabel = [i for i in cat if i in reuters.categories(ids[k])] # Jag tror att denna kan göra så att vi klarar multiklass för även mindre dataset
+				trainingLabel.append([a for a in categories if a in reuters.categories(ids[k])])
+
 			elif ids[k].startswith('test') and len(testData) < sum(nrTest[:i+1]):
 				testData.append( _cleanData(reuters.raw(ids[k]))) 
-				testLabel.append([cat])
+				testLabel.append([a for a in categories if a in reuters.categories(ids[k])])
+
 			k += 1
 	return trainingData, trainingLabel, testData, testLabel
 

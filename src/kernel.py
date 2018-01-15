@@ -200,7 +200,7 @@ def approximative_kernel(x,z,s,n,l):
     kss = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in s]
     kxx = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in x]               
     if hash(tuple(x)) == hash(tuple(z)):
-        K = np.identity(N)
+        K = np.zeros((N,N))
         print('Square kernel matrix generated')
         for i,xx in enumerate(x):
             for j in range(i,N):
@@ -255,19 +255,29 @@ def wk(s,t):
 #### NGK ####
 
 def ngk(s,t,n): 
-    from sklearn.feature_extraction.text import HashingVectorizer
-    anaylzer = 'char'
-    vectorizer = HashingVectorizer(anaylzer = 'char',ngram_range=(n,n))
+    from sklearn.feature_extraction.text import CountVectorizer
+    vectorizer = CountVectorizer(analyzer = 'char', ngram_range=(n,n))
     # Generate n-grams 
     
-    t_grams = vectorizer.fit_transform(t)
-    s_grams = vectorizer.transform(s)
+    #t_grams = vectorizer.fit_transform(t)
+    #s_grams = vectorizer.transform(s)
+    def _Ngrams(s,n):
+        return set(s[i:i+n] for i in range(len(s)-n+1))
+        
 
     #Normalize
     K = np.zeros((len(s),len(t)))
+
+    def _normalize(s,t,n):
+        s1 = _Ngrams(s,n)
+        t1 = _Ngrams(t,n)
+        if len(s1|t1) == 0:
+            return 1.0
+        return len(s1 & t1)/len(s1|t1)
+
     for i in range(len(s)):
         for j in range(len(t)):
-            K[i][j] = s_grams[i].dot(t_grams[j])
+            K[i][j] = _normalize(s[i],t[j],n)
     return K
 
 
