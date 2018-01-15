@@ -27,7 +27,7 @@ l = 0.5 # Lambda value
 
 kernel_method = 'ngk' 
 
-
+print('\n Building Classifier')
  # Generate a classifier that we can use for prediction.
 clf = svm.generateClassifier( trainData, trainLabels, n, l,categories,kernel_method)
 print('\n Classifier built')
