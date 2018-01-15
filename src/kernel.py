@@ -237,22 +237,37 @@ def kernelValuesListChptr6(x,s,n,l):
 #### WK ####
 
 def wk(s,t):
-    from sklearn.feature_extraction.text import TfidfVectorizer
-    vec = TfidfVectorizer(analyzer = 'char',norm = 'l2')
-    return vec.fit_transform(s).toarray().dot(vec.fit_transform(t).toarray().T)
+    from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+
+    vec = CountVectorizer(analyzer = 'word')
+    transformer = TfidfTransformer(smooth_idf = True)
+
+
+    t_wk = transformer.fit_transform(vec.fit_transform(t).toarray()).toarray()
+    s_wk = transformer.fit_transform(vec.transform(s).toarray()).toarray()
+
+    K = np.zeros((len(s),len(t)))
+    for i in range(len(s)):
+        for j in range(len(t)):
+            K[i][j] = s_wk[i].dot(t_wk[j])
+    return K
 
 #### NGK ####
 
 def ngk(s,t,n): 
     from sklearn.feature_extraction.text import HashingVectorizer
     anaylzer = 'char'
-    vectorizer = HashingVectorizer(anaylzer,ngram_range=(n,n),norm = 'l2')
+    vectorizer = HashingVectorizer(anaylzer = 'char',ngram_range=(n,n))
     # Generate n-grams 
     
-    s_grams = vectorizer.fit_transform(s)
     t_grams = vectorizer.fit_transform(t)
-    #Normalize
+    s_grams = vectorizer.transform(s)
 
-    return s_grams.toarray().dot(t_grams.toarray().T) #Compute the kernel and return
+    #Normalize
+    K = np.zeros((len(s),len(t)))
+    for i in range(len(s)):
+        for j in range(len(t)):
+            K[i][j] = s_grams[i].dot(t_grams[j])
+    return K
 
 
