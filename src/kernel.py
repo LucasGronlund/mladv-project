@@ -200,7 +200,7 @@ def approximative_kernel(x,z,s,n,l):
     kss = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in tqdm(s)]
     kxx = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in tqdm(x)]               
     if hash(tuple(x)) == hash(tuple(z)):
-        K = np.identity(N)
+        K = np.zeros((N,N))
         print('Square kernel matrix generated')
         for i,xx in enumerate(x):
             for j in range(i,N):
@@ -237,22 +237,46 @@ def kernelValuesListChptr6(x,s,n,l):
 #### WK ####
 
 def wk(s,t):
-    from sklearn.feature_extraction.text import TfidfVectorizer
-    vec = TfidfVectorizer(analyzer = 'char',norm = 'l2')
-    return vec.fit_transform(s).toarray().dot(vec.fit_transform(t).toarray().T)
+    from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+
+    vec = CountVectorizer(analyzer = 'word')
+    transformer = TfidfTransformer(smooth_idf = True)
+
+
+    t_wk = transformer.fit_transform(vec.fit_transform(t).toarray()).toarray()
+    s_wk = transformer.fit_transform(vec.transform(s).toarray()).toarray()
+
+    K = np.zeros((len(s),len(t)))
+    for i in range(len(s)):
+        for j in range(len(t)):
+            K[i][j] = s_wk[i].dot(t_wk[j])
+    return K
 
 #### NGK ####
 
 def ngk(s,t,n): 
-    from sklearn.feature_extraction.text import HashingVectorizer
-    anaylzer = 'char'
-    vectorizer = HashingVectorizer(anaylzer,ngram_range=(n,n),norm = 'l2')
-    # Generate n-grams 
     
-    s_grams = vectorizer.fit_transform(s)
-    t_grams = vectorizer.fit_transform(t)
     #Normalize
+    K = np.zeros((len(s),len(t)))
+    
+    def _normalize(s,t,n):
+        p1 = set([s[i:i+n] for i in range(len(s)-n+1)])
+        p2 = set([t[i:i+n] for i in range(len(t)-n+1)])
 
-    return s_grams.toarray().dot(t_grams.toarray().T) #Compute the kernel and return
+        same = 0.0;
+        unique = 0.0;
+
+        same = len(p1 & p2)
+        unique = len(p1 | p2)
+        if unique == 0:
+            return 1.0
+        return same/unique
+
+    for i in range(len(s)):
+        
+        for j in range(len(t)):
+            
+            K[i][j] = _normalize(s[i],t[j],n)
+    return K
 
 
