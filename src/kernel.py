@@ -238,19 +238,21 @@ def kernelValuesListChptr6(x,s,n,l):
 
 def wk(s,t):
     from sklearn.feature_extraction.text import TfidfVectorizer
-    vec = TfidfVectorizer()
-    return vec.fit_transform(s).toarray().dot(vec.fit_transform(t).toarray())
+    vec = TfidfVectorizer(analyzer = 'char',norm = 'l2')
+    return vec.fit_transform(s).toarray().dot(vec.fit_transform(t).toarray().T)
 
 #### NGK ####
 
 def ngk(s,t,n): 
     from sklearn.feature_extraction.text import HashingVectorizer
-    vectorizer = HashingVectorizer(analyzer = 'char',ngram_range(n,n), norm = 'l2')
+    anaylzer = 'char'
+    vectorizer = HashingVectorizer(anaylzer,ngram_range=(n,n),norm = 'l2')
     # Generate n-grams 
+    
     s_grams = vectorizer.fit_transform(s)
     t_grams = vectorizer.fit_transform(t)
     #Normalize
 
-    return s_grams.dot(t_grams) #Compute the kernel and return
+    return s_grams.toarray().dot(t_grams.toarray().T) #Compute the kernel and return
 
 
