@@ -47,7 +47,7 @@ def generateClassifier(features, labels, n, l,cat,kern,x = None):
 def classifier_precomputed(K_train, K_test,Train_labels,test_labels,cat):
 
 	### Generate label representation from ex: 'corn' and 'earn'
-	Y = _labelMaker(labels,cat)
+	Y = _labelMaker(Train_labels,cat)
 
 	## Generate Kernel matrix module
 	c = 1	
