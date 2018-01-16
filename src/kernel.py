@@ -198,27 +198,26 @@ def recursive_kernel(s,t,n,l):
 def approximative_kernel(x,z,s,n,l):
     N = len(x)
     kss = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in tqdm(s)]
-    kxx = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in tqdm(x)]               
+    kxx = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in tqdm(x)]
+    kxs = kernelValuesListChptr6(x,s,n,l)    
     if hash(tuple(x)) == hash(tuple(z)):
-        K = np.zeros((N,N))
+        K = np.identity(N)
         print('Square kernel matrix generated')
         for i,xx in enumerate(x):
-            for j in range(i,N):
+            for j in range(i+1,N):
                 for k,ss in enumerate(s):
-                    kxs = _k(xx,ss,n,l,_k_prime(xx,ss,n,l))
-                    k = (kxs*kxs)/(kss[k]*sqrt(kxx[j]*kxx[i]))
+                    k = (kxs[i][k]*kxs[j][k])/(kss[k]*sqrt(kxx[j]*kxx[i]))
                     K[i,j] += k
                     K[j,i] += k
         return K   
 
     K = np.zeros([N,len(z)])
     kzz = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in z]
+    kxz = kernelValuesListChptr6(z,s,n,l)
     for i,xx in enumerate(tqdm(x)):
         for j,zz in enumerate(tqdm(z)):
             for k,ss in enumerate(tqdm(s)):
-                kxs = _k(xx,ss,n,l,_k_prime(xx,ss,n,l))
-                kzs = _k(zz,ss,n,l,_k_prime(zz,ss,n,l)) 
-                K[i,j] += (kzs*kxs)/(kss[k]*sqrt(kzz[j]*kxx[i]))
+                K[i,j] += (kxs[i][k]*kxz[j][k])/(kss[k]*sqrt(kzz[j]*kxx[i]))
     return K
 
 def kernelValuesList(x,n,l):
