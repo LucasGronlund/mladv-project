@@ -34,8 +34,8 @@ def generateClassifier(features, labels, n, l,cat,kern):
 
 	## Generate Kernel matrix module
 	K = _giveK(features,features,n,l,kern)
-	c = 100
-	print('C = ' + str(c))
+	c = 1e7
+	print(' C = ' + str(c))
 	clf = OneVsRestClassifier(SVC(C = c, kernel='precomputed',decision_function_shape = 'ovr',class_weight = 'balanced'))
 	# Return the classifier, god I love how easy this is in python
 	return clf.fit(K,Y)
