@@ -9,16 +9,20 @@ from sklearn.metrics import classification_report
 def _labelMaker(labels,categories):
 	return MultiLabelBinarizer(classes=categories).fit_transform(labels)
 
-def _giveK(s,t,n,l,kern):
+def _giveK(s,t,n,l,kern,x = None):
 	K = []
 	if kern == 'r':
 		K = kernel.recursive_kernel(s,t,n,l)
 	elif kern == 'a':
-		K = kernel.approximative_kernel(s,t,n,l)
+		K = kernel.approximative_kernel(s,t,x,n,l)
 	elif kern == 'wk':
 		K = kernel.wk(s,t)
 	elif kern == 'ngk':
 		K = kernel.ngk(s,t,n)
+	elif kern == 'cppr':
+		K = kernel.cpp_recursive_kernel(s,t,n,l)
+	elif kern == 'cppa':
+		K = 0 # Not implemented
 	return K
 	'''
 		This uses sklearn SVM kit using a one vs rest approach.
@@ -27,21 +31,35 @@ def _giveK(s,t,n,l,kern):
 	'''
 
 
-def generateClassifier(features, labels, n, l,cat,kern):
+def generateClassifier(features, labels, n, l,cat,kern,x = None):
 
 	### Generate label representation from ex: 'corn' and 'earn'
 	Y = _labelMaker(labels,cat)
 
 	## Generate Kernel matrix module
-	K = _giveK(features,features,n,l,kern)
-	c = 1e7
+	K = _giveK(features,features,n,l,kern,x)
+	c = 1	
 	print(' C = ' + str(c))
-	clf = OneVsRestClassifier(SVC(C = c, kernel='precomputed',decision_function_shape = 'ovr',class_weight = 'balanced'))
+	clf = OneVsRestClassifier(SVC(C = c, kernel='precomputed',decision_function_shape = 'ovo',class_weight = 'balanced'))
 	# Return the classifier, god I love how easy this is in python
 	return clf.fit(K,Y)
 
-def predict(features,control, classifier, n,l,kern):
-	K = _giveK(features,control,n,l,kern)	
+def classifier_precomputed(K_train, K_test,Train_labels,test_labels,cat):
+
+	### Generate label representation from ex: 'corn' and 'earn'
+	Y = _labelMaker(labels,cat)
+
+	## Generate Kernel matrix module
+	c = 1	
+	print(' C = ' + str(c))
+	clf = OneVsRestClassifier(SVC(C = c, kernel='precomputed',decision_function_shape = 'ovo',class_weight = 'balanced'))
+	# Return the classifier, god I love how easy this is in python
+	pred = clf.fit(K_train,Y).predict(K_test)
+	print(classification_report(_labelMaker(test_labels,cat),pred,target_names=cat))
+
+
+def predict(features,control, classifier, n,l,kern, x = None):
+	K = _giveK(features,control,n,l,kern,x)	
 	return classifier.predict(K)
 
 
