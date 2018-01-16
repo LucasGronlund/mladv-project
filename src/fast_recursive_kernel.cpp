@@ -42,7 +42,7 @@ void printmatrix(double** matrix, int height, int length)
 	{
 		for(int col = 0; col < length; col = col +1)
 		{
-			std::cout << " " << std::setprecision(16) << matrix[row][col];
+			std::cout << " " << std::setprecision(60) << matrix[row][col];
 		}
 	}
 	std::cout << "\n";
