@@ -257,7 +257,7 @@ def wk(s,t):
 def ngk(s,t,n): 
     
     #Normalize
-    K = np.zeros((len(s),len(t)))
+    K = np.zeros((len(s),len(t))).astype(float)
     
     def _normalize(s,t,n):
         p1 = set([s[i:i+n] for i in range(len(s)-n+1)])
@@ -266,9 +266,9 @@ def ngk(s,t,n):
         same = 0.0;
         unique = 0.0;
 
-        same = len(p1 & p2)
-        unique = len(p1 | p2)
-        if unique == 0:
+        same = float(len(p1 & p2))
+        unique = float(len(p1 | p2))
+        if unique == 0.0:
             return 1.0
         return same/unique
 
@@ -280,3 +280,35 @@ def ngk(s,t,n):
     return K
 
 
+#### C++ RECURSIVE KERNEL ####
+
+def cpp_recursive_kernel(s,t,n,l):
+    import subprocess
+    import io
+    test = subprocess.Popen(["g++","fast_recursive_kernel.cpp","-o","fast_recursive_kernel.out"], stdout=subprocess.PIPE)
+    output_compile = test.communicate()[0]
+    def parseMatrix(matrix):
+        num_rows = int(matrix[0])
+        num_cols = int(matrix[1])
+        K = np.zeros([num_rows,num_cols])
+        counter = 2
+        for i in range(num_rows):
+            for j in range(num_cols):
+                K[i,j] = float(matrix[counter])
+                counter = counter + 1
+        return K
+
+    the_strings = b''
+    the_args = bytes(str(len(s)),'ascii')+ b' ' + bytes(str(len(t)),'ascii')+ b' '
+    for i in s:
+        the_strings = the_strings + bytes(i,'ascii')
+        the_args = the_args + bytes(str(len(i)),'ascii') + b' '
+    for i in t:
+        the_strings = the_strings + bytes(i,'ascii')
+        the_args = the_args + bytes(str(len(i)),'ascii') + b' '
+    the_args = the_args + bytes(str(n), 'ascii')+ b' ' + bytes(str(l), 'ascii')
+    fast_kernel = subprocess.Popen(["./fast_recursive_kernel.out"], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    output_test = fast_kernel.communicate(input=b'1 '+the_args+the_strings)[0]
+    output_test_list = output_test.decode('utf-8').split()
+    K = parseMatrix(output_test_list)
+    return K
