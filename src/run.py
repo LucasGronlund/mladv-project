@@ -13,7 +13,7 @@ numberOfTesting = [25,40,15,10]
 
 trainData,trainLabels, testData,testLabel = fd.loadData(categories,numberOfTraining,numberOfTesting)
 
-n = 4 # Length of subsequence
+n = 3 # Length of subsequence
 l = 0.5 # Lambda value
 
     #------------------------------------------------------#
@@ -34,7 +34,7 @@ print('\n Classifier built')
 
 
 res = svm.predict(testData,trainData,clf,n,l,kernel_method)
-print(res)
+#print(res)
 print('\n Prediction done \n\n Score Card:') 
 
 svm.score(res,testLabel,categories)
