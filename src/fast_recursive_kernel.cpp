@@ -2,20 +2,11 @@
 #include <iostream>
 #include <chrono>
 #include <math.h>
+#include <iomanip>
 
 
-
-// = 854;
-int n;// = 10;
-float l;// = 0.5;
-
-double ** K = NULL;
-//
-// char s_test[] = "det var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och hadet var en gang en apa och ha";
-// char t_test[] = "jag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apajag var en apa";
-
-// char * s;
-// char * t;
+int n;
+float l;
 
 double *** mkMatrix(int height, int length, int depth)
 {
@@ -32,24 +23,16 @@ double *** mkMatrix(int height, int length, int depth)
 double ** mkMatrix(int height, int length)
 {
 	double ** tempMat = new double * [height];
-	for (int i = 0; i < height; ++i) {
-		tempMat[i] = new double[length];
- 	}
+	for (int i = 0; i < height; ++i) tempMat[i] = new double[length];
  	return tempMat;
 }
 
 void cleanMatrix(double *** theMat, int height, int length, int depth)
 {
   for (int i = 0; i < height; i++)
-  {
     for (int j = 0; j < length; j++)
-    {
       for (int k = 0; k < depth; k++)
-      {
         theMat[0][0][0] = 0;
-      }
-    }
-  }
 }
 
 void printmatrix(double** matrix, int height, int length)
@@ -59,7 +42,7 @@ void printmatrix(double** matrix, int height, int length)
 	{
 		for(int col = 0; col < length; col = col +1)
 		{
-			std::cout << " " << matrix[row][col];
+			std::cout << " " << std::setprecision(16) << matrix[row][col];
 		}
 	}
 	std::cout << "\n";
@@ -123,38 +106,33 @@ double k (char* s, char* t, int n, double l, int s_len, int t_len, double *** kp
 
 double ** recursive_kernel(char** s, char** t, int n, double l, int s_number_of_str, int t_number_of_str, int* s_lens, int* t_lens, double *** kp, double *** kpp)
 {
-  K = mkMatrix(s_len,t_len);
+  double ** K = mkMatrix(s_number_of_str,t_number_of_str);
   double * kss = new double[s_number_of_str];
   double * ktt = new double[t_number_of_str];
-
-  // char * s_temp = new char[1];
-  // char * t_temp = new char[1];
-
 
   if (s_number_of_str != t_number_of_str)
   {
     double kst = 0;
     for (int i = 0; i < s_number_of_str; i++)
     {
-      k_prime(s_temp,s_temp,n,l,1,1,kp,kpp); // calculate _k(i,i,n,l,_k_prime(i,i,n,l))
-      kss[i] = k(s_temp,s_temp,n,l,1,1,kp);
-      cleanMatrix(kp, n, 1, 1);
+      k_prime(s[i],s[i],n,l,s_lens[i],s_lens[i],kp,kpp); // calculate _k(i,i,n,l,_k_prime(i,i,n,l))
+      kss[i] = k(s[i],s[i],n,l,s_lens[i],s_lens[i],kp);
+      cleanMatrix(kp, n, s_lens[i], s_lens[i]);
     }
     for (int i = 0; i < t_number_of_str; i++)
     {
-      t_temp[0] = t[i];
-      k_prime(t_temp,t_temp,n,l,1,1,kp,kpp); // calculate _k(i,i,n,l,_k_prime(i,i,n,l))
-      ktt[i] = k(t_temp,t_temp,n,l,1,1,kp);
-      cleanMatrix(kp, n, 1, 1);
+      k_prime(t[i],t[i],n,l,t_lens[i],t_lens[i],kp,kpp); // calculate _k(i,i,n,l,_k_prime(i,i,n,l))
+      ktt[i] = k(t[i],t[i],n,l,t_lens[i],t_lens[i],kp);
+      cleanMatrix(kp, n, t_lens[i], t_lens[i]);
     }
-    for (int i = 0; i < s_len; i++)
+    for (int i = 0; i < s_number_of_str; i++)
     {
-      for (int j = 0; j < t_len; j++)
+      for (int j = 0; j < t_number_of_str; j++)
       {
-        s_temp[0] = s[i]; t_temp[0] = t[j];
-        k_prime(s_temp,t_temp,n,l,1,1,kp,kpp);
-        kst = k(s_temp,t_temp,n,l,1,1,kp);
-        cleanMatrix(kp, n, 1, 1);
+        // s_temp[0] = s[i]; t_temp[0] = t[j];
+        k_prime(s[i],t[j],n,l,s_lens[i],t_lens[j],kp,kpp);
+        kst = k(s[i],t[j],n,l,s_lens[i],t_lens[j],kp);
+        cleanMatrix(kp, n, s_lens[i],t_lens[j]);
         K[i][j] = kst/sqrt(kss[i]*ktt[j]);
       }
     }
@@ -162,39 +140,70 @@ double ** recursive_kernel(char** s, char** t, int n, double l, int s_number_of_
 
   } else
   {
-    for (int i = 0; i < s_len; i++) K[i][i] = 1; // np.ientity(N)
+    double kst = 0;
+    for (int i = 0; i < s_number_of_str; i++) K[i][i] = 1; // np.ientity(N)
+
+    for (int i = 0; i < s_number_of_str; i++)
+    {
+      k_prime(s[i],s[i],n,l,s_lens[i],s_lens[i],kp,kpp); // calculate _k(i,i,n,l,_k_prime(i,i,n,l))
+      kss[i] = k(s[i],s[i],n,l,s_lens[i],s_lens[i],kp);
+      cleanMatrix(kp, n, s_lens[i], s_lens[i]);
+    }
+
+    for (int i = 0; i < s_number_of_str; i++)
+    {
+      for (int j = i + 1; j < s_number_of_str; j++)
+      {
+        k_prime(s[i],t[j],n,l,s_lens[i],t_lens[j],kp,kpp);
+        kst = k(s[i],t[j],n,l,s_lens[i],t_lens[j],kp);
+        cleanMatrix(kp, n, s_lens[i],t_lens[j]);
+
+        K[i][j] = kst/sqrt(kss[i]*kss[j]);
+        K[j][i] = K[i][j];
+      }
+    }
+
   }
   return K;
 }
 
+// double ** approximate_kernel()
+
 int main() {
   std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+
+  int choice_of_function = 0;
+  (void) scanf("%d",&choice_of_function);
+
 
   int s_number_of_strings = 0;
   int t_number_of_strings = 0;
 
 
   (void) scanf("%d %d",&s_number_of_strings, &t_number_of_strings);
-  std::cout << s_number_of_strings << std::endl;
-  std::cout << t_number_of_strings << std::endl;
 
   char ** s_features = new char * [s_number_of_strings];
   char ** t_features = new char * [t_number_of_strings];
-
   int * s_string_lengths = new int[s_number_of_strings];
   int * t_string_lengths = new int[t_number_of_strings];
+  int s_string_lengths_max = 0;
+  int t_string_lengths_max = 0;
 
   for (int i = 0; i < s_number_of_strings; i++)
   {
     (void) scanf("%d",&s_string_lengths[i]);
     s_features[i] = new char[s_string_lengths[i]];
-    // std::cout << s_string_lengths[i] << std::endl;
+    if (s_string_lengths[i] > s_string_lengths_max){
+      s_string_lengths_max = s_string_lengths[i];
+    }
   }
   for (int i = 0; i < t_number_of_strings; i++)
   {
     (void) scanf("%d",&t_string_lengths[i]);
     t_features[i] = new char[t_string_lengths[i]];
-    // std::cout << t_string_lengths[i] << std::endl;
+    if (t_string_lengths[i] > t_string_lengths_max){
+      t_string_lengths_max = t_string_lengths[i];
+    }
   }
 
 
@@ -203,8 +212,6 @@ int main() {
   (void) scanf("%d %f", &n, &l);
   double *** kp = NULL;
   double *** kpp = NULL;
-  std::cout << n << std::endl;
-  std::cout << l << std::endl;
 
   for (int i = 0; i < s_number_of_strings; i++)
     for (int j = 0; j < s_string_lengths[i]; j++)
@@ -215,42 +222,15 @@ int main() {
     for (int j = 0; j < t_string_lengths[i]; j++)
       (void) scanf("%c", &t_features[i][j]);
 
-  // for (int i = 0; i < number_of_strings; i++)
-  // {
-  //   kp = mkMatrix(n, the_s_len + 1, the_t_len + 1);
-  //   kpp = mkMatrix(n, the_s_len + 1, the_s_len + 1);
-  // }
-  // int the_s_len;// = 1769;
-  // int the_t_len;
-  // double *** kp = NULL;
-  // double *** kpp = NULL;
-  // std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-  // n = 0; l = 0; the_s_len = 0; the_t_len = 0;
-  // (void) scanf("%d %d %d %f", &the_s_len, &the_t_len, &n, &l);
-  /////////////////
-  // s = new char[the_s_len];
-  // t = new char[the_t_len];
-  // for (int i = 0; i < the_s_len; i++) (void) scanf("%c", &s[i]);
-  // for (int i = 0; i < the_t_len; i++) (void) scanf("%c", &t[i]);
 
-  // std::cout << the_s_len << std::endl;
-  // std::cout << the_t_len << std::endl;
+  kp = mkMatrix(n, s_string_lengths_max + 1, t_string_lengths_max + 1);
+  kpp = mkMatrix(n, s_string_lengths_max + 1, t_string_lengths_max + 1);
 
-
-
-  // kp = mkMatrix(n, the_s_len + 1, the_t_len + 1);
-  // kpp = mkMatrix(n, the_s_len + 1, the_s_len + 1);
-  //
-  //
-  // // k_prime(s_test, t_test, n, l, the_s_len, the_t_len, kp, kpp);
-  // // std::cout << k (s_test, t_test, n, l, the_s_len, the_t_len, kp) << std::endl;
-  //
-  // recursive_kernel(s_test,  t_test, n, l, the_s_len, the_t_len, kp, kpp);
-
-
-
-
-
+  if (choice_of_function == 1)
+  {
+    double ** K = recursive_kernel(s_features,  t_features, n, l, s_number_of_strings, t_number_of_strings, s_string_lengths, t_string_lengths, kp, kpp);
+    printmatrix(K,s_number_of_strings,t_number_of_strings);
+  }
 
   std::chrono::steady_clock::time_point end= std::chrono::steady_clock::now();
   std::cout << "Total time: " << std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()/1000 << " ms" << std::endl;
