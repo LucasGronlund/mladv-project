@@ -113,6 +113,7 @@ double ** recursive_kernel(char** s, char** t, int n, double l, int s_number_of_
   if (s_number_of_str != t_number_of_str)
   {
     double kst = 0;
+
     for (int i = 0; i < s_number_of_str; i++)
     {
       k_prime(s[i],s[i],n,l,s_lens[i],s_lens[i],kp,kpp); // calculate _k(i,i,n,l,_k_prime(i,i,n,l))
@@ -186,23 +187,23 @@ int main() {
   char ** t_features = new char * [t_number_of_strings];
   int * s_string_lengths = new int[s_number_of_strings];
   int * t_string_lengths = new int[t_number_of_strings];
-  int s_string_lengths_max = 0;
-  int t_string_lengths_max = 0;
+  int all_string_lengths_max = 0;
+  // int t_string_lengths_max = 0;
 
   for (int i = 0; i < s_number_of_strings; i++)
   {
     (void) scanf("%d",&s_string_lengths[i]);
     s_features[i] = new char[s_string_lengths[i]];
-    if (s_string_lengths[i] > s_string_lengths_max){
-      s_string_lengths_max = s_string_lengths[i];
+    if (s_string_lengths[i] > all_string_lengths_max){
+      all_string_lengths_max = s_string_lengths[i];
     }
   }
   for (int i = 0; i < t_number_of_strings; i++)
   {
     (void) scanf("%d",&t_string_lengths[i]);
     t_features[i] = new char[t_string_lengths[i]];
-    if (t_string_lengths[i] > t_string_lengths_max){
-      t_string_lengths_max = t_string_lengths[i];
+    if (t_string_lengths[i] > all_string_lengths_max){
+      all_string_lengths_max = t_string_lengths[i];
     }
   }
 
@@ -223,8 +224,12 @@ int main() {
       (void) scanf("%c", &t_features[i][j]);
 
 
-  kp = mkMatrix(n, s_string_lengths_max + 1, t_string_lengths_max + 1);
-  kpp = mkMatrix(n, s_string_lengths_max + 1, t_string_lengths_max + 1);
+
+
+  kp = mkMatrix(n, all_string_lengths_max + 1, all_string_lengths_max + 1);
+  kpp = mkMatrix(n, all_string_lengths_max + 1, all_string_lengths_max + 1);
+
+
 
   if (choice_of_function == 1)
   {
