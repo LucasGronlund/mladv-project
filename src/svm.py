@@ -14,19 +14,7 @@ def _labelMaker(labels,categories):
 	return MultiLabelBinarizer(classes=categories).fit_transform(labels)
 
 def _giveK(s,t,n,l,kern):
-	K = []
-	if kern == 'r':
-		K = kernel.recursive_kernel(s,t,n,l)
-	elif kern == 'a':
-		x = mff.mostFrequentFeatures(t,n,100)
-		K = kernel.approximative_kernel(s,t,x,n,l)
-	elif kern == 'wk':
-		K = kernel.wk(s,t)
-	elif kern == 'ngk':
-		K = kernel.ngk(s,t,n)
-	elif kern == 'cppr':
-		K = kernel.cpp_recursive_kernel(s,t,n,l)
-	elif kern == 'cppa':
+	def _get_me_a_precomputed_x_vector(n):
 		if n == 3:
 			cwd = os.getcwd()+'/../data/clean_data/10000features3k.csv'
 		elif n == 4:
@@ -44,8 +32,23 @@ def _giveK(s,t,n,l,kern):
 				x.append(i[0])
 		feat = 3000
 		print('Number of feature vectors in s: ' + str(feat))
-		x = x[0:feat]
+		return x[0:feat]
 
+
+	K = []
+	if kern == 'r':
+		K = kernel.recursive_kernel(s,t,n,l)
+	elif kern == 'a':
+		x = _get_me_a_precomputed_x_vector(n)
+		K = kernel.approximative_kernel(s,t,x,n,l)
+	elif kern == 'wk':
+		K = kernel.wk(s,t)
+	elif kern == 'ngk':
+		K = kernel.ngk(s,t,n)
+	elif kern == 'cppr':
+		K = kernel.cpp_recursive_kernel(s,t,n,l)
+	elif kern == 'cppa':
+		x = _get_me_a_precomputed_x_vector(n)
 		K = kernel.cpp_approximative_kernel(s,t,x,n,l) 
 	return K
 	'''
