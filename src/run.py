@@ -1,10 +1,14 @@
 import fetch_data as fd
 import svm
+import MostFrequentFeatures as mff
 
 categories = ['acq','earn','corn','crude']
 numberOfTraining = [114,152,38,76]
 numberOfTesting = [25,40,15,10]
 
+categories = ['acq','earn','corn','ship']
+numberOfTraining = [1650,2877,181,197]
+numberOfTesting = [719,1087,56,89]
 
 #categories = ['earn','crude','acq']
 #numberOfTraining = [10,10,30]
@@ -13,8 +17,8 @@ numberOfTesting = [25,40,15,10]
 
 trainData,trainLabels, testData,testLabel = fd.loadData(categories,numberOfTraining,numberOfTesting)
 
-n = 10 # Length of subsequence
-l = 0.5 # Lambda value
+n = 5 # Length of subsequence
+l = 0.5# Lambda value
 
     #------------------------------------------------------#
     # Choose Kernel method for svm						   # 
@@ -23,9 +27,11 @@ l = 0.5 # Lambda value
     # a is approximative Kernel.                           #
     # wk is the word kernel                	               #           
     # ngk is the ngk Kernel				                   #
+    # cppr is the C++ Recursive Kernel				       #
+    # cppa is the C++ Approximative Kernel			       #
     #------------------------------------------------------#
 
-kernel_method = 'ngk' 
+kernel_method = 'cppa' 
 
 print('\n Building Classifier')
 
