@@ -1,22 +1,26 @@
 import fetch_data as fd
 import svm
+import os
 import MostFrequentFeatures as mff
+from nltk.corpus import reuters 
+
 
 categories = ['acq','earn','corn','crude']
 numberOfTraining = [114,152,38,76]
 numberOfTesting = [25,40,15,10]
 
-categories = ['acq','earn','corn','ship']
-numberOfTraining = [1650,2877,181,197]
-numberOfTesting = [719,1087,56,89]
+#categories = ['acq','earn','corn','ship']
+#numberOfTraining = [1650,2877,181,197]
+#numberOfTesting = [719,1087,56,89]
 
 #categories = ['earn','crude','acq']
 #numberOfTraining = [10,10,30]
 #numberOfTesting = [7,2,3]
 
-
+print('fetching data')
 trainData,trainLabels, testData,testLabel = fd.loadData(categories,numberOfTraining,numberOfTesting)
-
+#trainData,trainLabels, testData,testLabel = fd.fullData()
+#categories = reuters.categories()
 n = 5 # Length of subsequence
 l = 0.5# Lambda value
 
@@ -31,7 +35,7 @@ l = 0.5# Lambda value
     # cppa is the C++ Approximative Kernel			       #
     #------------------------------------------------------#
 
-kernel_method = 'cppa' 
+kernel_method = 'wk' 
 
 print('\n Building Classifier')
 
@@ -46,3 +50,5 @@ res = svm.predict(testData,trainData,clf,n,l,kernel_method)
 print('\n Prediction done \n\n Score Card:') 
 
 svm.score(res,testLabel,categories)
+
+os.system('say "Processen är klar"')
