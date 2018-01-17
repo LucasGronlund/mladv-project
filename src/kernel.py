@@ -213,7 +213,7 @@ def approximative_kernel(x,z,s,n,l):
 
     K = np.zeros([N,len(z)])
     kzz = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in z]
-    kxz = kernelValuesListChptr6(z,s,n,l)
+    kzs = kernelValuesListChptr6(z,s,n,l)
     for i,xx in enumerate(tqdm(x)):
         for j,zz in enumerate(tqdm(z)):
             for k,ss in enumerate(tqdm(s)):
