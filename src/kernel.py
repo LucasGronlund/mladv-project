@@ -281,12 +281,7 @@ def ngk(s,t,n):
 
 #### C++ RECURSIVE KERNEL ####
 
-def cpp_recursive_kernel(s,t,n,l):
-    import subprocess
-    import io
-    test = subprocess.Popen(["g++","fast_recursive_kernel.cpp","-o","fast_recursive_kernel.out"], stdout=subprocess.PIPE)
-    output_compile = test.communicate()[0]
-    def parseMatrix(matrix):
+def _parseMatrix(matrix):
         num_rows = int(matrix[0])
         num_cols = int(matrix[1])
         K = np.zeros([num_rows,num_cols])
@@ -296,6 +291,13 @@ def cpp_recursive_kernel(s,t,n,l):
                 K[i,j] = float(matrix[counter])
                 counter = counter + 1
         return K
+
+def cpp_recursive_kernel(s,t,n,l):
+    import subprocess
+    import io
+    test = subprocess.Popen(["g++","fast_recursive_kernel.cpp","-o","fast_recursive_kernel.out"], stdout=subprocess.PIPE)
+    output_compile = test.communicate()[0]
+
 
     the_strings = b''
     the_args = bytes(str(len(s)),'ascii')+ b' ' + bytes(str(len(t)),'ascii')+ b' '
@@ -309,5 +311,35 @@ def cpp_recursive_kernel(s,t,n,l):
     fast_kernel = subprocess.Popen(["./fast_recursive_kernel.out"], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     output_test = fast_kernel.communicate(input=b'1 '+the_args+the_strings)[0]
     output_test_list = output_test.decode('utf-8').split()
-    K = parseMatrix(output_test_list)
+    K = _parseMatrix(output_test_list)
+    return K
+
+
+def cpp_approximative_kernel(x,z,s,n,lmda):
+    import subprocess
+    import io
+    test = subprocess.Popen(["g++","fast_approximative_kernel.cpp","-o","fast_approximative_kernel.out"], stdout=subprocess.PIPE)
+    output_compile = test.communicate()[0]
+
+    the_strings = b''
+    if hash(tuple(x)) == hash(tuple(z)):
+        equal_hash = b'1 '
+    else:
+        equal_hash = b'0 '
+    the_args = bytes(str(len(x)),'ascii')+ b' ' + bytes(str(len(z)),'ascii')+ b' ' + bytes(str(len(s)),'ascii')+ b' '
+    for i in x:
+        the_strings = the_strings + bytes(i,'ascii')
+        the_args = the_args + bytes(str(len(i)),'ascii') + b' '
+    for i in z:
+        the_strings = the_strings + bytes(i,'ascii')
+        the_args = the_args + bytes(str(len(i)),'ascii') + b' '
+    for i in s:
+        the_strings = the_strings + bytes(i,'ascii')
+        the_args = the_args + bytes(str(len(i)),'ascii') + b' '
+    the_args = the_args + bytes(str(n), 'ascii')+ b' ' + bytes(str(lmda), 'ascii')
+    fast_kernel = subprocess.Popen(["./fast_approximative_kernel.out"], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    output_test = fast_kernel.communicate(input=equal_hash+the_args+the_strings)[0]
+#     print(output_test.decode('utf-8'))
+    output_test_list = output_test.decode('utf-8').split()
+    K = _parseMatrix(output_test_list)
     return K
