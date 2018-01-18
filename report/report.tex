@@ -1,28 +1,31 @@
-\documentclass[10pt,a4paper]{report}
+\documentclass[10pt,a4paper,titlepage]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{makeidx}
 \usepackage{graphicx}
+\usepackage{caption}
+\usepackage[a4paper,margin=1in]{geometry}
 \author{Erik Rosvall, Viktor Karlsson, Lucas Grönlund \& Marcus Alsterman}
 \title{Machine Learning Advanced course, Project}
+
 %\setcounter{chapter}{1}
 \begin{document}
 	\maketitle
 	
-	\section*{Introduction}
+	\section{Introduction}
 	\input{introduction.tex}
 	
-	\section*{Method}
+	\section{Method}
 	\input{method.tex}
 	
-	\section*{Results}
+	\section{Results}
 	\input{results.tex}
 	
-	\section*{Discussion}
+	\section{Discussion}
 	\input{discussion.tex}
 	
-	\section*{References}
+	\section{References}
 	\bibliography{citations.bib}
 \end{document}
