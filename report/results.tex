@@ -25,7 +25,7 @@
 	crude & 4 & 0.92 & 0.86 & 0.89     \\ 
 	 & 5 & 1 & 0.73 &  0.84    \\ \hline
 \end{tabular}
-
+\captionof{table}{Subset of the NGK runs for different length N. We can clearly see that NGK performs well for small N, but considerably worse for larger N (see appendix).}
 \begin{tabular}{ c | c | c | c | c | }
 	SSK & k, $ \lambda = 0.5 $ & Precision & Recall & F1   \\ \hline	
 	& 3 & 0.96 & 0.88 & 0.92     \\ 
@@ -41,6 +41,7 @@
 	crude & 4 & 0.92 & 0.86 & 0.89     \\ 
 	& 5 & 1 & 0.73 &  0.84    \\ \hline
 \end{tabular}
+\captionof{table}{String Subsequence Kernel for different length k. Like it's algorithmic cousin the NGK, it performs well for relative small k, but less well for larger k (again, see appendix for all data).}
 
 \begin{tabular}{ c | c | c | c | c | }
 	SSK & $ \lambda  $, k = 5& Precision & Recall & F1   \\ \hline	
@@ -57,7 +58,7 @@
 	crude & 0.1 & 1 & 0.91 & 0.95     \\ 
 	& 0.5 & 1 & 0.70 &  0.82    \\ \hline
 \end{tabular}
-
+\captionof{table}{Varying $ \lambda $ shows that SSK is not that sensitive to values of $ \lambda $. Generally we can see that unless you choose more extreme values, the SSK performs well. }
 
 % TODO Alignment of S vectors
 \begin{figure}
@@ -100,3 +101,4 @@
 	wheat & 0.79 & 0.86 &  0.84 & 0.8 & 0.8 & 0.8 & 0.76 \\ \hline
 	corn & 0.86 & 0.73 &  0.85 & 0.65 & 0.78 & 0.72 & 0.6 \\ \hline	
 \end{tabular}
+\captionof{table}{Lodhi's top ten performing classes for the full dataset with an approximating kernel.}
