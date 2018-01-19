@@ -1,6 +1,8 @@
 % TODO
+\subsection{Reuters-21578 data set}
+
 \subsection{String subsequence kernel}
-The method Lodhi et al. proposes is to compare documents by the means of the substrings they contain, the more substrings two documents have in common the more similar they are. These substrings do however not need to be contiguous, which is what sets this this method of comparison apart from the word kernel's and n-gram kernel's method.
+e substrings two documents have in common the more similar they are. These substrings do however not need to be contiguous, which is what sets this this method of comparison apart from the word kernel's and n-gram kernel's method.
 
 The feature vectors for each document is thus created through first generating all non-contiguous substrings of length k from all the documents. Each such substring is then regarded as a dimension of the feature space. The transformation of the document to this feature space is then performed "simply" trough finding all occurrences of these substrings and weighing them according to how compactly the substring is embedded in the text. This is handled through the introduction of a decay factor $ \lambda \in (0,1) $, which lets us put smaller emphasis for less compact substrings than ones more compact. An example of this, presented by Lodhi et al., is if we consider the substring (dimension of the feature space) \textbf{c-a-r}. This is more compactly represented in the document '\textbf{car}d', than in the document '\textbf{c}ust\textbf{ar}d' giving the former a value of $ \lambda^3 $ and the latter $ \lambda^6 $ (where the exponent directly corresponds to the length of the sequence for which the feature is contained. )
 
@@ -69,6 +71,8 @@ One can then observe that $ K''_i(sx,tu) = \lambda^{|u|}K''_i(sx,t)$, in the cas
 K''_i(sx,tx) = \lambda \left( K''_i(sx,t) + \lambda K'_{i-1}(s,t) \right).
 \end{equation*} 
 With this implementation the computational complexity reduces to $ \mathcal{O}(n|s||t|) $.
+
+Even with this improvement in efficiency will the algorithm not be practical to apply to larger data sets. Therefore to compare this method to the other two, which are presented in the following sections, we only 
 
 \subsection{n-gram kernel}
 The n-gram kernel (NGK) transforms text documents to the feature space in a similar fashion as described above, but does instead only consider contiguous substrings of length n, \textit{n-grams}. The value of each dimension in the feature space of a document is thus the number of occurrences of that n-gram in the document. 
