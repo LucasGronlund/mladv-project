@@ -93,13 +93,13 @@ def _k_prime(s,t,n,l,cutoff):
     newT = min(cutoff+1,len(t)+1);
     
     #start by creating the empty matrices.
-    kp = np.zeros([n,len(s)+1,newT]);
-    kpp = np.zeros([n,len(s)+1,newT]);
+    kp = np.zeros([n,len(s)+1,len(t)+1]);
+    kpp = np.zeros([n,len(s)+1,len(t)+1]);
     #initialize
     kp[0][:][:] = 1;
     for i in range(1,n):
         for j in range(i,len(s)):
-            for k in range(i,newT):
+            for k in range(i,min(newT+i,len(t)+1)):
                 #check whether 'x occurs in u' as described in the paper
                 if(s[j-1]!=t[k-1]):
                     kpp[i][j][k]=l*kpp[i][j][k-1];
