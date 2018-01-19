@@ -1,5 +1,4 @@
-%TODO
-% - Intro to text classification (multilable)
+
 In the area of machine learning, classification of unseen data is of great interest. For this to be possible feature vectors of the input data is needed which is trivial for some types of data, but not so much for others. Text documents is an example of one such kind. One method for feature extraction often used within the field of text classification is the \textit{kernel method}, transforming the data into a \textit{feature space} and there compare similarity between data points through their inner product. Using the '\textit{kernel trick}' for the \textit{Support Vector Machine} (SVM) classifier the explicit transform into this feature space can be avoided which in many cases is what enables the method to be used since the feature spaces can be of very high dimensionality, in some cases even infinite. 
 
 The paper \textit{Text classification using string kernels} written by Lohdi et. al. presents a new method of performing the feature extraction from text documents which Lohdi et al. names \textit{String Subsequence Kernel} (SSK). The SSK is compared with two other kernel feature extraction methods, namely \textit{Word Kernel} (WK) and \textit{N-Gram Kernel} (NGK). Kernels are however not the only successful type of method in the text classification field, neural networks (Convolutional Neural Networkds (CNN) and Recurrent Convolutional Neural Networks (RCNN)) as well as a method called \textit{fastText} have shown great results. These are regarded as state of the art algorithms and will be discussed in comparison to the kernels methods presented above. 
@@ -7,7 +6,4 @@ The paper \textit{Text classification using string kernels} written by Lohdi et.
 Throughout Lohdi et al. the dataset used for classification was the \textit{Reuters dataset} consisting of news articles from Reuters news agency. \textit{Modified Apte}, also known as ModeApte, was used to split this data set into 7769 training documents and 3019 test documents, divided into 90 classes. These classes are however not mutually exclusive which is common for text data, a document can for example be tagged with both 'earn' and 'acquisition' which is an extension making the classification more involved.
 
 The aim of this report is to replicate the results in Lohdi et al. regarding the SSK, where the emphasis is put on the approximative implementation of their kernel method. We have therefore used Python packages as sklearn and numpy for supplying SVM algorithms and other conveniences, but written code for all three kernels ourselves. We also propose and test a possible computational complexity reduction of the SSK since this is one of the major downside with the algorithm.
-% - Purpose of ssk report
-% - Kernels
-% - Explain wk and ngk
-% - Other methods (not kernels)
+
