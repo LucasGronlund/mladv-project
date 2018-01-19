@@ -69,14 +69,13 @@ def _find(str, ch):
 
 #### DYNAMIC PROGRAMMING KERNEL #####
 
-def _k_prime(s,t,n,l):
+def _k_prime(s,t,n,l,cutoff):
 
     #-------------------------------------------------------------------------------------#
     # Basically what's happening here is that we are succesively looping through both of  #
     # the strings and updating the kernel matrix accordingly while refering to previously #
     # computed values. This will give us time complexity O(n|s||t|) in the end.           #
     #-------------------------------------------------------------------------------------#
-    
     
     #Variables:
     #
@@ -85,19 +84,22 @@ def _k_prime(s,t,n,l):
     #n is the length of the substring
     #l is the lambda value
     #kp is refering to k'
-    #kpp is refering to k'' 
+    #kpp is refering to k''
+    #
+    #----NEW-----
+    #
+    #cutoff is the maximum length of the string that will be checked.
+
+    newT = min(cutoff+1,len(t)+1);
     
     #start by creating the empty matrices.
-    kp = np.zeros([n,len(s)+1,len(t)+1]);
-    kpp = np.zeros([n,len(s)+1,len(t)+1]);
-    
+    kp = np.zeros([n,len(s)+1,newT]);
+    kpp = np.zeros([n,len(s)+1,newT]);
     #initialize
     kp[0][:][:] = 1;
-    
     for i in range(1,n):
         for j in range(i,len(s)):
-            for k in range(i,len(t)+1):
-
+            for k in range(i,newT):
                 #check whether 'x occurs in u' as described in the paper
                 if(s[j-1]!=t[k-1]):
                     kpp[i][j][k]=l*kpp[i][j][k-1];
@@ -111,7 +113,7 @@ def _k_prime(s,t,n,l):
     return kp;
 
 
-def _k(s,t,n,l,kp):
+def _k(s,t,n,l,kp,cutoff):
     
     #--------------------------------------------------#
     # This takes in an already computed k_prime kernel #
@@ -195,11 +197,11 @@ def recursive_kernel(s,t,n,l):
 
 #### APPROXIMATIVE KERNEL IMPLEMENTATION #####
 
-def approximative_kernel(x,z,s,n,l):
+def approximative_kernel(x,z,s,n,l,cutoff):
     N = len(x)
-    kss = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in tqdm(s)]
-    kxx = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in tqdm(x)]
-    kxs = kernelValuesListChptr6(x,s,n,l)    
+    kss = [ _k(i,i,n,l,_k_prime(i,i,n,l,cutoff),cutoff) for i in tqdm(s)]
+    kxx = [ _k(i,i,n,l,_k_prime(i,i,n,l,cutoff),cutoff) for i in tqdm(x)]
+    kxs = kernelValuesListChptr6(x,s,n,l,cutoff)    
     if hash(tuple(x)) == hash(tuple(z)):
         K = np.identity(N)
         print('Square kernel matrix generated')
@@ -212,23 +214,23 @@ def approximative_kernel(x,z,s,n,l):
         return K   
 
     K = np.zeros([N,len(z)])
-    kzz = [ _k(i,i,n,l,_k_prime(i,i,n,l)) for i in z]
-    kzs = kernelValuesListChptr6(z,s,n,l)
+    kzz = [ _k(i,i,n,l,_k_prime(i,i,n,l,cutoff)) for i in z]
+    kzs = kernelValuesListChptr6(z,s,n,l,cutoff)
     for i,xx in enumerate(tqdm(x)):
-        for j,zz in enumerate(z):
-            for k,ss in enumerate(s):
+        for j,zz in enumerate(tqdm(z)):
+            for k,ss in enumerate(tqdm(s)):
                 K[i,j] += (kxs[i][k]*kxz[j][k])/(kss[k]*sqrt(kzz[j]*kxx[i]))
     return K
 
 def kernelValuesList(x,n,l):
-    kVal = [_k(i,i,n,l,_k_prime(i,i,n,l)) for i in tqdm(x)]
+    kVal = [_k(i,i,n,l,_k_prime(i,i,n,l,cutoff)) for i in x]
     return kVal
 
-def kernelValuesListChptr6(x,s,n,l):
+def kernelValuesListChptr6(x,s,n,l,cutoff):
     Kxs = np.zeros([len(x),len(s)]);
     for i in tqdm(range(len(x))):
         for j in range(len(s)):
-            Kxs[i][j]=_k(x[i],s[j],n,l,_k_prime(x[i],s[j],n,l))
+            Kxs[i][j]=_k(x[i],s[j],n,l,_k_prime(x[i],s[j],n,l,cutoff),cutoff)
     return Kxs
 
 
