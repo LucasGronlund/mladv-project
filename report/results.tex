@@ -1,57 +1,51 @@
-Experiments where conducted in the following order
-
-
-% TODO Fix subset of data w. four classes
-\begin{tabular}{| c | c | c | c | } \hline
-	 WK  & Precision & Recall & F1   \\ \hline	
-	 acq &  0.974 (0.843) & 0.930 (0.768) & 0.951 (0.802) \\ \hline
-	 earn &   0.978 (0.989)& 0.972 (0.867)& 0.976 (0.925)  \\ \hline
-	 corn &   0.992 (0.833) & 0.867 (0.710) &  0.923 (0.762) \\ \hline
-	 crude &   0.946 (0.910) & 0.957 (0.907) &  0.948 (0.904) \\ \hline
-	
-\end{tabular}
-\captionof{table}{Running Word Kernel ten times and averaging the result. Numbers in parenthesis is the reference value.}
-
-\begin{tabular}{| c | c | c | c | c | }\hline
-	NGK & k & Precision & Recall & F1   \\ \hline	
-	 & 3 & 0.96 & 0.88 & 0.92     \\ 
-	acq & 4 & 0.90 & 0.89 &  0.89    \\
-	 & 5 & 0.97 & 0.86 & 0.92     \\ \hline
-	 & 3 & 0.97 & 0.93 &  0.95    \\ 
-	earn & 4 & 0.99 & 0.93 &  0.96    \\ 
-	 & 5 & 0.99 & 0.89 &  0.93    \\ \hline
-	 & 3 & 1 & 0.87 & 0.93     \\ 
-	corn & 4 & 1 & 0.64 & 0.78     \\ 
-	 & 5 & 1 & 0.44 &  0.61    \\ \hline
-	 & 3 & 0.90 & 0.90 &  0.90    \\ 
-	crude & 4 & 0.92 & 0.86 & 0.89     \\ 
-	 & 5 & 1 & 0.73 &  0.84    \\ \hline
-\end{tabular}
-\captionof{table}{Subset of the NGK runs for different length N. We can clearly see that NGK performs well for small N, but considerably worse for larger N (see appendix).}
-
 
 \begin{tabular}{l r}
-	\subfloat[String Subsequence Kernel for different length k. Like it's algorithmic cousin the NGK, it performs well for relative small k, but less well for larger k (again, see appendix for all data).]{
-		\begin{tabular}{| c | c | c | c | c | }
-		\hline
-		SSK & k, $ \lambda = 0.5 $ & Precision & Recall & F1   \\ \hline	
-		& 3 & 0.96 & 0.88 & 0.92     \\ 
-		acq & 4 & 0.90 & 0.89 &  0.89    \\
-		& 5 & 0.97 & 0.86 & 0.92     \\ \hline
-		& 3 & 0.97 & 0.93 &  0.95    \\ 
-		earn & 4 & 0.99 & 0.93 &  0.96    \\ 
-		& 5 & 0.99 & 0.89 &  0.93    \\ \hline
-		& 3 & 1 & 0.87 & 0.93     \\ 
-		corn & 4 & 1 & 0.64 & 0.78     \\ 
-		& 5 & 1 & 0.44 &  0.61    \\ \hline
-		& 3 & 0.90 & 0.90 &  0.90    \\ 
-		crude & 4 & 0.92 & 0.86 & 0.89     \\ 
-		& 5 & 1 & 0.73 &  0.84    \\ \hline
-\end{tabular} 
-}
+
+			\begin{tabular}{| c | c | c | c | } \hline
+		WK  & Precision & Recall & F1   \\ \hline	
+		acq &  0.974  & 0.930  & 0.951 (0.802) \\ \hline
+		earn &   0.978 & 0.972 & 0.976 (0.925)  \\ \hline
+		corn &   0.992  & 0.867  &  0.923 (0.762) \\ \hline
+		crude &   0.946  & 0.957  &  0.948 (0.904) \\ \hline	
+	\end{tabular}
 &
-	\subfloat[Varying $ \lambda $ shows that SSK is not that sensitive to values of $ \lambda $. Generally we can see that unless you choose more extreme values, the SSK performs well. ]{
-			\begin{tabular}{| c | c | c | c | c | } \hline
+			\begin{tabular}{| c | c | c | c | c | }\hline
+			NGK & k & Precision & Recall & F1   \\ \hline	
+			& 3 & 0.96 & 0.88 & 0.92     \\ 
+			acq & 4 & 0.90 & 0.89 &  0.89    \\
+			& 5 & 0.97 & 0.86 & 0.92     \\ \hline
+			& 3 & 0.97 & 0.93 &  0.95    \\ 
+			earn & 4 & 0.99 & 0.93 &  0.96    \\ 
+			& 5 & 0.99 & 0.89 &  0.93    \\ \hline
+			& 3 & 1 & 0.87 & 0.93     \\ 
+			corn & 4 & 1 & 0.64 & 0.78     \\ 
+			& 5 & 1 & 0.44 &  0.61    \\ \hline
+			& 3 & 0.90 & 0.90 &  0.90    \\ 
+			crude & 4 & 0.92 & 0.86 & 0.89     \\ 
+			& 5 & 1 & 0.73 &  0.84    \\ \hline
+	\end{tabular}\\
+
+\end{tabular}\\
+	Running Word Kernel ten times and averaging the result. Numbers in parenthesis is the reference value from Lodhi et al.
+Subset of the NGK runs for different length N. We can clearly see that NGK performs well for small N, but considerably worse for larger N (see appendix).\\
+\begin{tabular}{l r}	
+		\begin{tabular}{| c | c | c | c | c | }\hline
+			SSK & k, $ \lambda = 0.5 $ & Precision & Recall & F1   \\ \hline	
+				& 3 & 0.93 & 0.96 & 0.94     \\ 
+			acq& 4 & 0.93 & 0.96 &  0.94  \\
+				& 5 & 0.97 & 0.93 & 0.95    \\ \hline
+				& 3 & 0.99 & 0.93 & 0.96  \\ 
+			earn& 4 & 0.99 & 0.95 &  0.97   \\
+				& 5 & 0.99 & 0.96 & 0.97    \\  \hline
+				& 3 & 0.97 & 0.87 & 0.91  \\ 
+			corn& 4 & 0.98 & 0.64 & 0.88    \\ 
+				& 5 & 0.98 & 0.44 &  0.83    \\ \hline
+				& 3 & 0.97 & 0.86 &  0.88   \\ 
+			crude& 4 & 0.98 & 0.80 & 0.91   \\ 
+			 & 5 & 0.98 & 0.73 &  0.88  \\ \hline
+		\end{tabular} 
+&
+		\begin{tabular}{| c | c | c | c | c | } \hline
 			SSK & $ \lambda  $, k = 5& Precision & Recall & F1   \\ \hline	
 			& 0.05 & 1 & 0.92 & 0.96     \\ 
 			acq & 0.1 & 1& 1 &  1    \\
@@ -66,10 +60,11 @@ Experiments where conducted in the following order
 			crude & 0.1 & 1 & 0.91 & 0.95     \\ 
 			& 0.5 & 1 & 0.70 &  0.82    \\ \hline
 	\end{tabular}
-}
-
-
 \end{tabular}
+ \\
+String Subsequence Kernel for different length k. Like it's algorithmic cousin the NGK, it performs well for relative small k, but less well for larger k (again, see appendix for all data). 
+
+Varying $ \lambda $ shows that SSK is not that sensitive to values of $ \lambda $. Generally we can see that unless you choose more extreme values, the SSK performs well.
 
 
 % TODO Alignment of S vectors
@@ -87,16 +82,15 @@ Experiments where conducted in the following order
 
 
 \begin{tabular}{l r}
-	\subfloat[F1 scores for approximate kernel validation. k = 5 and $ \lambda = 0.5 $. Lodhi's results in parenthesis. This allows us to verify our implementation of the approximation kernel, but is not used for extensive results analysis.]{
+\hspace{-1.05cm}
 	\begin{tabular}{| c | c | c | }\hline
 		& s = 1000 & s = 3000   \\ \hline
 		acq & 0.96 (0.88)& 0.97 (0.85)\\ \hline
 		earn & 0.98 (0.97) & 0.98  (0.97) \\ \hline
 		ship & 0.43 (0.10) & 0.63  (0.53) \\ \hline
 		corn & 0.84 (0.15) & 0.89 (0.65) \\ \hline
-\end{tabular}} &
+\end{tabular} &
 
-\subfloat[Lodhi's top ten performing classes with our results for the full dataset with an approximating kernel. For the SSK $ \lambda $ was held constant at $ 0.5 $.]{
 
 \begin{tabular}{| c | c | c | c | c | c | c | c |}\hline
 	& WK & NGK & NGK  & NGK  & SSK & SSK& SSK \\ 
@@ -111,7 +105,6 @@ Experiments where conducted in the following order
 	ship & 0.78 & 0.66 &  0.55 & 0.47 & 0.69 & 0.5 & 0.34 \\ \hline
 	wheat & 0.79 & 0.86 &  0.84 & 0.8 & 0.8 & 0.8 & 0.76 \\ \hline
 	corn & 0.86 & 0.73 &  0.85 & 0.65 & 0.78 & 0.72 & 0.6 \\ \hline	
-\end{tabular}}
-
 \end{tabular}
-
+\end{tabular}
+Lodhi's top ten performing classes with our results for the full dataset with an approximating kernel. For the SSK $ \lambda $ was held constant at $ 0.5 $. F1 scores for approximate kernel validation. k = 5 and $ \lambda = 0.5 $. Lodhi's results in parenthesis. This allows us to verify our implementation of the approximation kernel, but is not used for extensive results analysis.
