@@ -14,7 +14,7 @@ The feature vectors for each document is thus created through first generating a
 
 To not introduce unnecessary confusion we will present the definition of a SSK exactly like the definition presented in Lohdi et al. 
 
-\subsubsection*{Definition 1 - String subsequence kernel}
+\subsubsection{Definition 1 - String subsequence kernel}
 Let $ \Sigma $ be a finite alphabet. A string is a finite seqence of characters from $ \Sigma $, including the empty sequence. For strings $s,t$ we denote by $|s|$ the length of the string $ s = s_1 \dots s_{|s|} $, and by $ st $ the string obtained by concatenating the strings $ s $ and $ t $. The string $ s[i:j] $ is the substring $ s_i, \dots s_j $ of $ s $. We say that $ u $ us a subsequence of $ s $, if there exist indices $ \boldsymbol{i} = (i_1, \dots, i_{|u|}) $, with $ 1 \leq i_1 < \dots < i_{|u|} \leq |s| $, such that $ u_j = s_{i_{j}}$, for $ j = 1, \dots, |u|, $ or $ u = s[\boldsymbol{i}] $ for short. The length $ l(\boldsymbol{i}) $ of the subsequence in $ s $ is $ i_{|u|} - i_1 +1 $. We denote by $ \Sigma^n $ the set of all finite strings of length n, and by $ \Sigma^* $ the set of all strings 
 \begin{equation}\label{eq:all_Strings}
 \Sigma^* = \bigcup^{\infty}_{n=0}\Sigma^n
@@ -54,7 +54,7 @@ To calculate the similarity between the documents \textit{fail} and \textit{sail
 
 To explicitly calculate all the features for documents present in the Reuters-21578 would require impractical amounts of computations, which is why Lohdi et al. presents a recursive formulation to calculate the kernel values. We will present them as they are in the paper, since we followed them exactly in our implementation. 
 
-\subsubsection*{Definition - Recursive computation of the subsequence kernel}
+\subsubsection{Definition - Recursive computation of the subsequence kernel}
 \begin{align*}
 	K'_{0}(s,t) & = 1, for\ all\ s,t \\
 	K'_i(s,t) & = 0, if\ \min(|s|,|t|) < i \\
@@ -80,10 +80,23 @@ With this implementation the computational complexity reduces to $ \mathcal{O}(n
 
 Even with this improvement in efficiency will the algorithm still not be practical to apply to larger datasets, especially the full Reuters dataset. Therefore to compare this method to NGK and WK, which are presented in the following sections, Lohdi et al. only used a subset of Reuters, consisting of 470 documents (380 train and 90 test)  from only 4 classes (acq., earn, corn and crude). The split of train (test) documents between the classes are as follows: acq. 114 (25), earn 152 (50), corn 38 (15) and crude 76 (10).
 
-To test the algorithm on the entire Reuters dataset an approximative approach is needed. This is enabled through the fact that 
+\subsubsection{Approximating kernel}
+To test the algorithm on the entire Reuters dataset an approximative approach is needed. This is enabled through the general empirical kernel map presented by Schölkopf et al. which states that if we have a set $ S = \{s_i\} $ of vectors such that these vectors are orthogonal in the kernel space (that is $ \mathcal{K}(s_i,s_j) = C\delta_{ij} $), and that these feature vectors span the whole feature space, we can write the kernel value for any other two feature vectors
+\begin{equation}\label{eq:kernel_approx}
+\mathcal{K}(x,z) = \dfrac{1}{C}\sum_{s_i \in S}\mathcal{K}(x,s_i)\mathcal{K}(s_i,z)
+\end{equation}
+
+If we instead of constructing such a set $ S $ with full cardinality limit ourselves to only choosing a subset $ \tilde{S} \subset S $ we can approximate the true kernel value with fewer operations. How 'close' this approximation $ \mathcal{K} $ is to the true kernel matrix $ K $ can be measured through calculating the alignment of the two matrices, defined as
+
+\begin{equation}\label{key}
+A(K,\mathcal{K}) = \dfrac{\langle K, \mathcal{K}\rangle_{F}}{\sqrt{\langle \mathcal{K}, \mathcal{K}\rangle_{F} \langle K, K\rangle_{F} }}
+\end{equation}
+Here the subindex F indicates that the inner product is of Frobenius kind defined as $ \langle K_1,K_2 \rangle_{F} = \sum_{i}\sum_{j}K_1(x_i,x_j)K_2(x_i,x_j) $ 
+
+To generate $ \tilde{S} $ we followed Lohdi et al. by first choosing the substring length n, secondly counted all contiguous substrings of length n in all the documents and finally constructed $ \tilde{S} $ with the x most occurring substrings.
 
 \subsection{n-gram kernel}
-The n-gram kernel (NGK) transforms text documents to the feature space in a similar fashion as described above, but does instead only consider contiguous substrings of length n, \textit{n-grams}. The value of each dimension in the feature space of a document is thus the number of occurrences of that n-gram in the document. 
+The n-gram kernel (NGK) transforms text documents to the feature trough only considering contiguous substrings of length n, called \textit{n-grams}. The value of each dimension in the feature space of a document is thus the number of occurrences of that n-gram in the document. 
 
 With this approach all information encoded in the word order in the document is lost. The method has nonetheless proven useful, as we will see later.
 
@@ -92,14 +105,11 @@ Lohdi et al. presents the word kernel (WK) used as a is a linear kernel measurin
 
 
 \subsection{Preprocessing of data}
-Before 
-
+The Reuters dataset was preprocessed before training, through removing all stop words in each document. We used the python package nltk for the list of these non-informative words.
 
 
 \begin{itemize}
-	\item Implemented naive kernel, recursive, approx, ngk, wk, (fastText?)
 	
-	\item Alignment to compare real and approx K
 	
 	\item Possible improvement implementation 
 	
