@@ -3,6 +3,7 @@
 #include <chrono>
 #include <math.h>
 #include <iomanip>
+#include <algorithm>
 
 
 int n;
@@ -54,7 +55,7 @@ void k_prime(char* s, char* t, int n, double l, int s_len, int t_len, double ***
 	//cutoff is the maximum length of the string that will be checked.
 
   // Make first row of ones.
-	int newT = min(cutoff+1,t_len+1);
+	int newT = std::min(cutoff+1,t_len+1);
 
 
   int i = 0, j = 0, k = 0;
@@ -73,7 +74,7 @@ void k_prime(char* s, char* t, int n, double l, int s_len, int t_len, double ***
   {
     for (j = i; j < s_len; j++)
     {
-      for (k = i; k < min(newT+i,t_len+1); k++)//t_len + 1; k++)
+      for (k = i; k < std::min(newT+i,t_len+1); k++)//t_len + 1; k++)
       {
         if (s[j-1] != t[k-1])
         {

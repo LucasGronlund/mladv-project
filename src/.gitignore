@@ -2,3 +2,4 @@ __pycache__
 .ipynb_checkpoints
 fast_recursive_kernel.out
 fast_approximative_kernel.out
+fast_approximative_kernel_modified.out
