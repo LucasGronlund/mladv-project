@@ -1,6 +1,14 @@
 % TODO
+\subsection{Support Vector Machine}
+The SVM is a linear binary classifier used in many different supervised machine learning problems, both classification and regression. The algorithm can be formulated in a way such that the training features only occur in dot products with other training feature vectors, which often is called the \textit{dual formulation}. When the problem is formulated in this way the kernel trick can be used, which lets us avoid having to explicitly transform our input data into the feature space. 
+
+Since the Reuters dataset have text documents assigned to multiple classes, a problem often called multi-label- or vector output classification, the SVM cannot be used directly since it is a binary classifier. We implement a one vs rest training and classification scheme to deal with this issue. Thus, we train one classifier for each class with it regarded as the positive data and everything else as negative samples. 
+
+The implementation of this algorithm was through the use of skilean package in python. 
+
 \subsection{String subsequence kernel}
 The method Lodhi et al. proposes is to compare documents by the means of the substrings they contain, the more substrings two documents have in common the more similar they are. These substrings do however not need to be contiguous, which is what sets this this method of comparison apart from the word kernel's and n-gram kernel's method.
+
 
 The feature vectors for each document is thus created through first generating all non-contiguous substrings of length k from all the documents. Each such substring is then regarded as a dimension of the feature space. The transformation of the document to this feature space is then performed "simply" trough finding all occurrences of these substrings and weighing them according to how compactly the substring is embedded in the text. This is handled through the introduction of a decay factor $ \lambda \in (0,1) $, which lets us put smaller emphasis for less compact substrings than ones more compact. An example of this, presented by Lodhi et al., is if we consider the substring (dimension of the feature space) \textbf{c-a-r}. This is more compactly represented in the document '\textbf{car}d', than in the document '\textbf{c}ust\textbf{ar}d' giving the former a value of $ \lambda^3 $ and the latter $ \lambda^6 $ (where the exponent directly corresponds to the length of the sequence for which the feature is contained. )
 
@@ -69,6 +77,10 @@ One can then observe that $ K''_i(sx,tu) = \lambda^{|u|}K''_i(sx,t)$, in the cas
 K''_i(sx,tx) = \lambda \left( K''_i(sx,t) + \lambda K'_{i-1}(s,t) \right).
 \end{equation*} 
 With this implementation the computational complexity reduces to $ \mathcal{O}(n|s||t|) $.
+
+Even with this improvement in efficiency will the algorithm still not be practical to apply to larger datasets, especially the full Reuters dataset. Therefore to compare this method to NGK and WK, which are presented in the following sections, Lohdi et al. only used a subset of Reuters, consisting of 470 documents (380 train and 90 test)  from only 4 classes (acq., earn, corn and crude). The split of train (test) documents between the classes are as follows: acq. 114 (25), earn 152 (50), corn 38 (15) and crude 76 (10).
+
+To test the algorithm on the entire Reuters dataset an approximative approach is needed. This is enabled through the fact that 
 
 \subsection{n-gram kernel}
 The n-gram kernel (NGK) transforms text documents to the feature space in a similar fashion as described above, but does instead only consider contiguous substrings of length n, \textit{n-grams}. The value of each dimension in the feature space of a document is thus the number of occurrences of that n-gram in the document. 
