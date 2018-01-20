@@ -74,7 +74,7 @@ With this implementation the computational complexity reduces to $ \mathcal{O}(n
 
 
 \subsubsection{Approximating string subsequence kernel}
-To test SSK on the entire Reuters dataset an approximative approach is needed, we call this aSSK. This is enabled through the general empirical kernel map presented by Schölkopf et al. which states that if we have a set $ S = \{s_i\} $ of vectors such that these vectors, when transformed into the kernel space, are both orthogonal and span the entire kernel space (that is $ \mathcal{K}(s_i,s_j) = C\delta_{ij} $), we can write the kernel value for any other two feature vectors
+To test SSK on the entire Reuters dataset an approximative approach is needed, we call this aSSK. This is enabled through the general empirical kernel map presented in \cite{Scholkopf} which states that if we have a set $ S = \{s_i\} $ of vectors such that these vectors, when transformed into the kernel space, are both orthogonal and span the entire kernel space (that is $ \mathcal{K}(s_i,s_j) = C\delta_{ij} $), we can write the kernel value for any other two feature vectors
 \begin{equation}\label{eq:kernel_approx}
 \mathcal{K}(x,z) = \dfrac{1}{C}\sum_{s_i \in S}\mathcal{K}(x,s_i)\mathcal{K}(z,s_i)
 \end{equation}
