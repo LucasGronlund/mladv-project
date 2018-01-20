@@ -1,8 +1,8 @@
 
 \subsection{Support Vector Machine}
-The SVM is a binary classifier separating two classes of data with a maximum margin decision boundary. Since this is not of central interest in this or Lohdi et al.'s article, we suppose the details of this algorithm to be known. The algorithm can be formulated in a way such that the training features only occur in dot products with other training feature vectors, which often is called the \textit{dual formulation}. When the problem is formulated in this way the kernel trick can be used, which lets us avoid having to explicitly transform our input data into the feature space. 
+The SVM is a binary classifier separating two classes of data with a maximum margin decision boundary. Since this is not of central interest in this or Lohdi et al.'s article, we suppose the details of this algorithm to be known. The algorithm can be formulated in a way such that the training features only occur in inner products with other training feature vectors, which often is called the \textit{dual formulation}. When the problem is formulated in this way the kernel trick can be used, which lets us avoid having to explicitly transform our input data into the kernel space. 
 
-Since the Reuters dataset have text documents assigned to multiple classes, a problem often called\textit{ multi-label-} or \textit{vector output classification}, the SVM cannot be used directly since it is a binary classifier. To deal with this issue we implemented a one vs rest approach. Thus, we train one classifier for each class with data from that class regarded as positive samples and the rest of the dataset as negative samples. This algorithm was imported from the sklean package in python. 
+Since the Reuters dataset have text documents assigned to multiple classes, a problem often called\textit{ multi-label-} or \textit{vector output classification}, the SVM cannot be used directly since it is a binary classifier. To deal with this issue we implemented a \textit{one-vs-rest} approach. Thus, we train one classifier for each class with data from that class regarded as positive samples and the rest of the dataset as negative samples. This algorithm was imported from the \texttt{sklean} package in python. 
 
 \subsection{String subsequence kernel}
 Lodhi et al. proposes a feature extraction method for text documents, extending the n-gram approach to features also being non-contiguous substrings. The feature vectors for each document is thus created through first generating all such subsequences, from all documents in the dataset, of length $ k $. Each such substring is regarded as a dimension of the feature space. 
@@ -76,7 +76,7 @@ With this implementation the computational complexity reduces to $ \mathcal{O}(n
 \subsubsection{Approximating kernel}
 To test the algorithm on the entire Reuters dataset an approximative approach is needed. This is enabled through the general empirical kernel map presented by Schölkopf et al. which states that if we have a set $ S = \{s_i\} $ of vectors such that these vectors, when transformed into the kernel space, are both orthogonal and span the entire kernel space (that is $ \mathcal{K}(s_i,s_j) = C\delta_{ij} $), we can write the kernel value for any other two feature vectors
 \begin{equation}\label{eq:kernel_approx}
-\mathcal{K}(x,z) = \dfrac{1}{C}\sum_{s_i \in S}\mathcal{K}(x,s_i)\mathcal{K}(s_i,z)
+\mathcal{K}(x,z) = \dfrac{1}{C}\sum_{s_i \in S}\mathcal{K}(x,s_i)\mathcal{K}(z,s_i)
 \end{equation}
 
 If we instead of constructing a set $ S $ with full cardinality limit ourselves to only choosing a subset $ \tilde{S} \subset S $ we can approximate the true kernel value with fewer computations. How 'close' this approximation $ \mathcal{K} $ is to the true kernel matrix $ K $ can be measured through the alignment of the two matrices, defined as
@@ -84,12 +84,12 @@ If we instead of constructing a set $ S $ with full cardinality limit ourselves 
 \begin{equation}\label{key}
 A(K,\mathcal{K}) = \dfrac{\langle K, \mathcal{K}\rangle_{F}}{\sqrt{\langle \mathcal{K}, \mathcal{K}\rangle_{F} \langle K, K\rangle_{F} }}
 \end{equation}
-Here the subindex F indicates that the inner product is of Frobenius kind defined as $ \langle K_1,K_2 \rangle_{F} = \sum_{i}\sum_{j}K_1(x_i,x_j)K_2(x_i,x_j) $.
+Here the subindex F indicates that the inner product is Frobenius normed defined as $ \langle K_1,K_2 \rangle_{F} = \sum_{i}\sum_{j}K_1(x_i,x_j)K_2(x_i,x_j) $.
 
-To generate $ \tilde{S} $ we followed Lohdi et al., first choosing the substring length k, then counting all contiguous substrings of length k in all the documents and finally constructed $ \tilde{S} $ with the x most occurring substrings. Using the alignment measure between the approximated kernel matrix and the exact one, we studied the the effect the number of features had on the approximation
+To generate $ \tilde{S} $ we followed Lohdi et al., first choosing the substring length $ n $, then counting all contiguous substrings of length $ n $ in all the documents and finally constructed $ \tilde{S} $ with the x most occurring substrings. Using the alignment measure between the approximated kernel matrix and the exact one, we studied the the effect the number of features had on the approximation
 . 
 \subsection{N-gram kernel}
-The n-gram kernel (NGK) transforms text documents to the feature space trough  considering contiguous subsequences of length n, called \textit{n-grams}. The value of each dimension in the feature space of a document is thus the number of occurrences of that n-gram in the document. 
+The n-gram kernel (NGK) transforms text documents to the feature space trough  considering contiguous subsequences of length $ n $, called \textit{n-grams}. The value of each dimension in the feature space of a document is thus the number of occurrences of that n-gram in the document. 
 
 With this approach all information encoded in the word order in the document is lost. The method has nonetheless proven useful, as we will see later.
 
@@ -99,7 +99,7 @@ The word kernel (WK) transforms the documents to the feature space considering e
 %Lohdi et al. presents the word kernel (WK) used as a is a linear kernel measuring similarity between documents that are indexed by words using a variant of the \textit{tf-idf}, $ \log(1+tf) \cdot \log(n/df) $. Here tf is the term frequency and df is the document frequency while n is the number of documents. 
 
 \subsection{Metric for performance}
-Three metrics were used in the comparison between the kernels performance, namely \textit{precision}, \textit{recall} and \textit{F1-score}. For each class is the precision the ratio between \textit{the number of correctly classified documents belonging to this class} and \textit{the total number of classified documents}, while recall for a class is the ratio between \textit{the number of correctly classified documents in to that class} and \textit{the total number of documents in that class}. The F1-score is then calculated using these metrics, $ P $ for precision and $ R $ for recall,  through 
+Three metrics were used in the comparison between the kernels performance; \textit{precision}, \textit{recall} and \textit{$ F_1 $-score}. The precision for each class is the ratio between \textit{the number of correctly classified documents belonging to this class} and \textit{the total number of classified documents}, while recall for a class is the ratio between \textit{the number of correctly classified documents in to that class} and \textit{the total number of documents in that class}. The $ F_1 $-score is then calculated using these metrics, $ P $ for precision and $ R $ for recall,  through 
 \begin{equation*}\label{key}
 F_1 = 2\dfrac{PR}{P+R}
 \end{equation*}
@@ -109,7 +109,7 @@ With all algorithms and measures defined we can now turn to what results from Lo
 
 Secondly, we studied the SSK's performance when varying the decay factor $ \lambda $, again using the data subset. $ \lambda \in [0.01, 0.05, 0.1, 0.5, 0.7, 0.9] $ were the values used. 
 
-We then turned to the approximation, first studying how the number of vectors in the subset $ \tilde{S} $ effected the alignment score between the approximate kernel matrix and the exact one. Then, using a suitable approximation of the kernel matrix, we compared the performance of the (approximative) SSK with both WK and NGK on the entire Reuters dataset. We varied the sequence length $ k\in [3,8] $.  
+We then turned to the approximation, first studying how the number of vectors in the subset $ \tilde{S} $ effected the alignment score between the approximate kernel matrix and the exact one. Then, using a suitable approximation of the kernel matrix, we compared the performance of the (approximative) SSK with both WK and NGK on the entire Reuters dataset. We varied the sequence length $ n\in [3,8] $.  
 
 \subsection{Preprocessing of data}
 The Reuters dataset was preprocessed before training, through removing all stop words in each document. We used the python package \texttt{nltk} for the list of these non-informative words.
