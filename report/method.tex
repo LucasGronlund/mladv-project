@@ -103,15 +103,15 @@ The word kernel (WK) transforms the documents to the feature space considering e
 \subsection{Metric for performance}
 Three metrics were used in the comparison between the kernels performance, namely \textit{precision}, \textit{recall} and \textit{F1-score}. For each class is the precision the ratio between \textit{the number of correctly classified documents belonging to this class} and \textit{the total number of classified documents}, while recall for a class is the ratio between \textit{the number of correctly classified documents in to that class} and \textit{the total number of documents in that class}. The F1-score is then calculated using these metrics, $ P $ for precision and $ R $ for recall,  through 
 \begin{equation*}\label{key}
-F1 = 2\dfrac{PR}{P+R}
+F_1 = 2\dfrac{PR}{P+R}
 \end{equation*}
 
 \subsection{Actual experiment}
 With all algorithms and measures defined we can now turn to what results from Lohdi et al. we set out to replicate in more detail. First we studied how the sequence length impacted performance for both SSK and NGK while WK is from its definition not effected by this parameter. These trails were, in parallel with Lohdi et al., only performed on a subset of the data since even with the efficient implementation of the SSK, the algorithm is still computationally costly. The subset consisted of of 470 documents (380 train and 90 test) from  4 classes; acq., earn, corn and crude. The split of train (test) documents between the classes were as follows: acq. 114 (25), earn 152 (50), corn 38 (15) and crude 76 (10).
 
-Secondly, we studied the SSK's performance when varying the decay factor $ \lambda $, again using the data subset. $ \lambda \in [0.01, 0.1, 0.5] $ were the values used. 
+Secondly, we studied the SSK's performance when varying the decay factor $ \lambda $, again using the data subset. $ \lambda \in [0.01, 0.05, 0.1, 0.5, 0.7, 0.9] $ were the values used. 
 
-We then turned to the approximation, first studying how the number of vectors in the subset $ \tilde{S} $ effected the alignment score between the approximate kernel matrix and the exact one. Then, using a suitable approximation of the kernel matrix, we compared the performance of the (approximative) SSK with both WK and NGK on the entire Reuters dataset. We varied the sequence length $ k\in [3,4,5] $.  
+We then turned to the approximation, first studying how the number of vectors in the subset $ \tilde{S} $ effected the alignment score between the approximate kernel matrix and the exact one. Then, using a suitable approximation of the kernel matrix, we compared the performance of the (approximative) SSK with both WK and NGK on the entire Reuters dataset. We varied the sequence length $ k\in [3,8] $.  
 
 \subsection{Preprocessing of data}
 The Reuters dataset was preprocessed before training, through removing all stop words in each document. We used the python package \texttt{nltk} for the list of these non-informative words.
