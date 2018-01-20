@@ -7,7 +7,7 @@ We have clearly stated in the tables how many iterations were performed for that
 	\centering
 	\subfloat[NGK performance for different subequence lengths $ n $.]{
 	\begin{tabular}{| c | c | c | c | c | } \hline
-		NGK & $ n $ & Precision & Recall & F1   \\ \hline	
+		NGK & $ n $ & Precision & Recall & $ F_1 $   \\ \hline	
 		& 3 & 0.96 & 0.88 & 0.92     \\ 
 		acq & 4 & 0.90 & 0.89 &  0.89    \\
 		& 5 & 0.97 & 0.86 & 0.92     \\ \hline
@@ -24,7 +24,7 @@ We have clearly stated in the tables how many iterations were performed for that
 	}
 \quad
 	\subfloat[SSK performance for different sequence lengths $ n $. $ \lambda = 0.5 $ throughout.]{\begin{tabular}{| c | c | c | c | c | }\hline
-			SSK & $ n $ & Precision & Recall & F1   \\ \hline	
+			SSK & $ n $ & Precision & Recall & $ F_1 $   \\ \hline	
 			& 3 & 0.93 & 0.96 & 0.94     \\ 
 			acq& 4 & 0.93 & 0.96 &  0.94  \\
 			& 5 & 0.97 & 0.93 & 0.95    \\ \hline
@@ -41,7 +41,7 @@ We have clearly stated in the tables how many iterations were performed for that
 
 	\subfloat[WK performance results, averaged over 10 iterations. Numbers in parenthesis are reference value from Lodhi et al.]{
 	\begin{tabular}{| c | c | c | c | } \hline
-		WK  & Precision & Recall & F1   \\ \hline	
+		WK  & Precision & Recall & $ F_1 $   \\ \hline	
 		acq &  0.974  & 0.930  & 0.951 (0.802) \\ \hline
 		earn &   0.978 & 0.972 & 0.976 (0.925)  \\ \hline
 		corn &   0.992  & 0.867  &  0.923 (0.762) \\ \hline
@@ -49,7 +49,7 @@ We have clearly stated in the tables how many iterations were performed for that
 	\end{tabular}}
 
 	\subfloat[SSK performance results with varying $ \lambda $ . $ n=5 $ throughout.]{\begin{tabular}{| c | c | c | c | c | } \hline
-			SSK & $ \lambda  $& Precision & Recall & F1   \\ \hline	
+			SSK & $ \lambda  $& Precision & Recall & $ F_1 $   \\ \hline	
 			& 0.05 & 1 & 0.92 & 0.96     \\ 
 			acq & 0.1 & 1& 1 &  1    \\
 			& 0.5 & 0.89 & 1 & 0.94     \\ \hline
@@ -104,7 +104,7 @@ We have clearly stated in the tables how many iterations were performed for that
 		wheat & 0.79 & 0.86 &  0.84 & 0.8 & 0.8 & 0.8 & 0.76 \\ \hline
 		corn & 0.86 & 0.73 &  0.85 & 0.65 & 0.78 & 0.72 & 0.6 \\ \hline	
 	\end{tabular}
-\caption{Lodhi et al.'s ten best performing classes with our results for WK, NGK and approximative SSK using the entire Reuters dataset. For aSSK; $ \lambda = 0.5 $\label{tab:full_data} }
+\caption{Lodhi et al.'s ten best performing classes with our $ F_1 $ results for WK, NGK and  aSSK using the entire Reuters dataset. For aSSK; $ \lambda = 0.5 $\label{tab:full_data} }
 \end{table}
 
 
@@ -114,7 +114,7 @@ We have clearly stated in the tables how many iterations were performed for that
 	
 	\item Like it's algorithmic cousin the NGK, it performs well for relative small k, but less well for larger k (again, see appendix for all data)
 	
-	\item  Varying $ \lambda $shows that SSK is not that sensitive to values of $ \lambda $. Generally we can see that unless you choose more extreme values, the SSK performs well.
+	\item  Varying $ \lambda $ shows that SSK is not that sensitive to values of $ \lambda $. Generally we can see that unless you choose more extreme values, the SSK performs well.
 	
 	\item Lodhi's results in parenthesis. This allows us to verify our implementation of the approximation kernel, but is not used for extensive results analysis.
 \end{itemize}

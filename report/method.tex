@@ -12,7 +12,7 @@ The transformation of a document to this feature space is then performed "simply
 To not introduce unnecessary confusion we will present the definition of a SSK exactly as the definition presented in Lohdi et al. 
 
 \subsubsection{Definition - String subsequence kernel}
-Let $ \Sigma $ be a finite alphabet. A string is a finite seqence of characters from $ \Sigma $, including the empty sequence. For strings $s,t$ we denote by $|s|$ the length of the string $ s = s_1 \dots s_{|s|} $, and by $ st $ the string obtained by concatenating the strings $ s $ and $ t $. The string $ s[i:j] $ is the substring $ s_i, \dots s_j $ of $ s $. We say that $ u $ us a subsequence of $ s $, if there exist indices $ \boldsymbol{i} = (i_1, \dots, i_{|u|}) $, with $ 1 \leq i_1 < \dots < i_{|u|} \leq |s| $, such that $ u_j = s_{i_{j}}$, for $ j = 1, \dots, |u|, $ or $ u = s[\boldsymbol{i}] $ for short. The length $ l(\boldsymbol{i}) $ of the subsequence in $ s $ is $ i_{|u|} - i_1 +1 $. We denote by $ \Sigma^n $ the set of all finite strings of length n, and by $ \Sigma^* $ the set of all strings 
+Let $ \Sigma $ be a finite alphabet. A string is a finite seqence of characters from $ \Sigma $, including the empty sequence. For strings $s,t$ we denote by $|s|$ the length of the string $ s = s_1 \dots s_{|s|} $, and by $ st $ the string obtained by concatenating the strings $ s $ and $ t $. The string $ s[i:j] $ is the substring $ s_i, \dots s_j $ of $ s $. We say that $ u $ us a subsequence of $ s $, if there exist indices $ \boldsymbol{i} = (i_1, \dots, i_{|u|}) $, with $ 1 \leq i_1 < \dots < i_{|u|} \leq |s| $, such that $ u_j = s_{i_{j}}$, for $ j = 1, \dots, |u|, $ or $ u = s[\boldsymbol{i}] $ for short. The length $ l(\boldsymbol{i}) $ of the subsequence in $ s $ is $ i_{|u|} - i_1 +1 $. We denote by $ \Sigma^n $ the set of all finite strings of length $ n $, and by $ \Sigma^* $ the set of all strings 
 \begin{equation}\label{eq:all_Strings}
 \Sigma^* = \bigcup^{\infty}_{n=0}\Sigma^n
 \end{equation}
@@ -45,7 +45,7 @@ To prove our understanding of this definition we construct a unique example, whi
 \caption{Feature vectors for two simple documents.}
 \end{table}
 
-To calculate the similarity between the documents \textit{fail} and \textit{sail} we simply calculate the inner product between their respective feature vectors, resulting in the kernel value $ K_2(fail,sail)  = 2\lambda^4 + \lambda^6 $, where the subindex represent the subsequence length $ k $. An other example which we later used to prove that our implementation of the SSK was correct is the kernel values Lodhi et al. presents for the documents \textit{'science is organized knowledge'} and \textit{'wisdom is organized life'}. These were: $ K_1 = 0.580 $, $ K_2 = 0.580$, $ K_3 = 0.478, K_4=0.439, K_5 = 0.406, K_6 = 0.370 $.
+To calculate the similarity between the documents \textit{fail} and \textit{sail} we simply calculate the inner product between their respective feature vectors, resulting in the kernel value $ K_2(fail,sail)  = 2\lambda^4 + \lambda^6 $, where the subindex represent the subsequence length $ n $. An other example which we later used to prove that our implementation of the SSK was correct is the kernel values Lodhi et al. presents for the documents \textit{'science is organized knowledge'} and \textit{'wisdom is organized life'}. These were: $ K_1 = 0.580 $, $ K_2 = 0.580$, $ K_3 = 0.478, K_4=0.439, K_5 = 0.406, K_6 = 0.370 $.
 
 To explicitly calculate all the features for documents present in the Reuters dataset would require impractical amounts of computations, which is why Lohdi et al. presents a recursive formulation for the kernel values. We will again present these as they were in the paper, since we followed them exactly in our implementation. 
 
@@ -65,7 +65,7 @@ Observing that $ K'_i(s,t) $ can be evaluated with the recursion:
 \begin{equation*}\label{key}
 K'_i(sx,t) = \lambda K'_i(s,t) + K''_i(sx,t)
 \end{equation*}
-one can then observe that $ K''_i(sx,tu) = \lambda^{|u|}K''_i(sx,t)$, in the case that x does not occur in u, and otherwise 
+one can then observe that $ K''_i(sx,tu) = \lambda^{|u|}K''_i(sx,t)$, in the case that $ x $ does not occur in $ u $, and otherwise 
 \begin{equation*}\label{key}
 K''_i(sx,tx) = \lambda \left( K''_i(sx,t) + \lambda K'_{i-1}(s,t) \right).
 \end{equation*} 
@@ -73,8 +73,8 @@ With this implementation the computational complexity reduces to $ \mathcal{O}(n
 
 
 
-\subsubsection{Approximating kernel}
-To test the algorithm on the entire Reuters dataset an approximative approach is needed. This is enabled through the general empirical kernel map presented by Schölkopf et al. which states that if we have a set $ S = \{s_i\} $ of vectors such that these vectors, when transformed into the kernel space, are both orthogonal and span the entire kernel space (that is $ \mathcal{K}(s_i,s_j) = C\delta_{ij} $), we can write the kernel value for any other two feature vectors
+\subsubsection{Approximating string subsequence kernel}
+To test SSK on the entire Reuters dataset an approximative approach is needed, we call this aSSK. This is enabled through the general empirical kernel map presented by Schölkopf et al. which states that if we have a set $ S = \{s_i\} $ of vectors such that these vectors, when transformed into the kernel space, are both orthogonal and span the entire kernel space (that is $ \mathcal{K}(s_i,s_j) = C\delta_{ij} $), we can write the kernel value for any other two feature vectors
 \begin{equation}\label{eq:kernel_approx}
 \mathcal{K}(x,z) = \dfrac{1}{C}\sum_{s_i \in S}\mathcal{K}(x,s_i)\mathcal{K}(z,s_i)
 \end{equation}
@@ -86,7 +86,7 @@ A(K,\mathcal{K}) = \dfrac{\langle K, \mathcal{K}\rangle_{F}}{\sqrt{\langle \math
 \end{equation}
 Here the subindex F indicates that the inner product is Frobenius normed defined as $ \langle K_1,K_2 \rangle_{F} = \sum_{i}\sum_{j}K_1(x_i,x_j)K_2(x_i,x_j) $.
 
-To generate $ \tilde{S} $ we followed Lohdi et al., first choosing the substring length $ n $, then counting all contiguous substrings of length $ n $ in all the documents and finally constructed $ \tilde{S} $ with the x most occurring substrings. Using the alignment measure between the approximated kernel matrix and the exact one, we studied the the effect the number of features had on the approximation
+To generate $ \tilde{S} $ we followed Lohdi et al., first choosing the substring length $ n $, then counting all contiguous substrings of length $ n $ in all the documents and finally constructed $ \tilde{S} $ with the x most occurring substrings. Using the alignment measure between the approximated kernel matrix and the exact one, we studied the the effect the number of features had on the approximation. 
 . 
 \subsection{N-gram kernel}
 The n-gram kernel (NGK) transforms text documents to the feature space trough  considering contiguous subsequences of length $ n $, called \textit{n-grams}. The value of each dimension in the feature space of a document is thus the number of occurrences of that n-gram in the document. 
