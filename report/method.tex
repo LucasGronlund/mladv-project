@@ -29,8 +29,8 @@ K_n(s,t) &= \sum_{u\in\Sigma^n} \langle \phi_u(s) \cdot \phi_u(t) \rangle = \sum
 
 To prove our understanding of this definition we construct a unique example, which also illustrates how the feature vectors look. Consider two documents containing the words \textit{fail} or \textit{sail}. 
 
-\vspace{10pt}
-\begin{centering}
+\begin{table}[h]
+	\centering
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
 	\hline 
 	& f-a & f-i & f-l & a-i & a-l & i-l & s-a & s-i & s-l & a-t & l-i & l-t & i-t \\ 
@@ -41,12 +41,10 @@ To prove our understanding of this definition we construct a unique example, whi
 	%\hline 
 	$\phi(sail)$ & 0 & 0 & 0 & $\lambda^2$ & $\lambda^3$ & $\lambda^2$ & $\lambda^2$ & $\lambda^3$ & $\lambda^4$ & 0 & 0 & 0 & 0 \\ 
 	\hline 
-
 \end{tabular} 
-\captionof{table}{Feature vectors for two simple documents.}
-\end{centering}
+\caption{Feature vectors for two simple documents.}
+\end{table}
 
-\vspace{10pt}
 To calculate the similarity between the documents \textit{fail} and \textit{sail} we simply calculate the inner product between their respective feature vectors, resulting in the kernel value $ K_2(fail,sail)  = 2\lambda^4 + \lambda^6 $, where the subindex represent the subsequence length $ k $. An other example which we later used to prove that our implementation of the SSK was correct is the kernel values Lodhi et al. presents for the documents \textit{'science is organized knowledge'} and \textit{'wisdom is organized life'}. These were: $ K_1 = 0.580 $, $ K_2 = 0.580$, $ K_3 = 0.478, K_4=0.439, K_5 = 0.406, K_6 = 0.370 $.
 
 To explicitly calculate all the features for documents present in the Reuters dataset would require impractical amounts of computations, which is why Lohdi et al. presents a recursive formulation for the kernel values. We will again present these as they were in the paper, since we followed them exactly in our implementation. 
