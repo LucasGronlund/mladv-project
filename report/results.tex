@@ -22,7 +22,7 @@ We have clearly stated in the tables how many iterations were performed for that
 		& 3 & 0.90 & 0.90 &  0.90    \\ 
 		crude & 4 & 0.92 & 0.86 & 0.89     \\ 
 		& 5 & 1 & 0.73 &  0.84    \\ \hline
-	\end{tabular}
+	\end{tabular} \label{tab:ngk_subset}
 	}
 \quad
 	\subfloat[SSK performance for different sequence lengths $ n $. $ \lambda = 0.5 $ throughout.]{\begin{tabular}{| c | c | c | c | c | }\hline
@@ -39,7 +39,7 @@ We have clearly stated in the tables how many iterations were performed for that
 			& 3 & 0.97 & 0.86 &  0.88   \\ 
 			crude& 4 & 0.98 & 0.80 & 0.91   \\ 
 			& 5 & 0.98 & 0.73 &  0.88  \\ \hline
-	\end{tabular} }
+	\end{tabular}\label{tab:ssk_subset} }
 
 	\subfloat[WK performance results, averaged over 10 iterations. Numbers in parenthesis are reference value from \cite{lodhi}]{
 	\begin{tabular}{| c | c | c | c | } \hline
@@ -48,7 +48,7 @@ We have clearly stated in the tables how many iterations were performed for that
 		earn &   0.978 & 0.972 & 0.976 (0.925)  \\ \hline
 		corn &   0.992  & 0.867  &  0.923 (0.762) \\ \hline
 		crude &   0.946  & 0.957  &  0.948 (0.904) \\ \hline	
-	\end{tabular}}
+	\end{tabular}\label{tab:wk_subset}}
 
 	\subfloat[SSK performance results with varying $ \lambda $. Averaged over 10 iterations.  $ n=5 $ throughout.]{\begin{tabular}{| c | c | c | c | c | } \hline
 			SSK & $ \lambda  $& Precision & Recall & $ F_1 $   \\ \hline	
@@ -64,7 +64,7 @@ We have clearly stated in the tables how many iterations were performed for that
 			& 0.05 & 0.954 & 0.886 &  0.912    \\ 
 			crude & 0.1 & 0.975 & 0.912 & 0.939     \\ 
 			& 0.5 & 0.918 & 0.850 &  0.877    \\ \hline
-	\end{tabular}}
+	\end{tabular}\label{tab:ssk_lambda_subset}}
 \caption{Results from SSK, NGK and WK using subset of Reuters dataset.\label{tab:subset_data}}
 \end{table}
 
@@ -86,7 +86,7 @@ We have clearly stated in the tables how many iterations were performed for that
 		ship & 0.43 (0.10) & 0.63  (0.53) \\ \hline
 		corn & 0.84 (0.15) & 0.89 (0.65) \\ \hline
 	\end{tabular} 
-	\caption{F1 performance of the approximative SSK using 1000 and 3000 vectors in $ \tilde{S} $. $ n = 5 $ and $ \lambda = 0.5 $. Lodhi's results in parenthesis for comparison.\label{tab:alignment}}
+	\caption{F1 performance of the approximative SSK using 1000 and 3000 vectors in $ \tilde{S} $. $ n = 5 $ and $ \lambda = 0.5 $. Results from \cite{lodhi} is presented in parenthesis for comparison.\label{tab:alignment}}
 \end{table}
 
 
@@ -106,7 +106,7 @@ We have clearly stated in the tables how many iterations were performed for that
 		wheat & 0.79 & 0.86 &  0.84 & 0.8 & 0.8 & 0.8 & 0.76 \\ \hline
 		corn & 0.86 & 0.73 &  0.85 & 0.65 & 0.78 & 0.72 & 0.6 \\ \hline	
 	\end{tabular}
-\caption{The ten best performing classes from \cite{lodhi} shown with our $ F_1 $ results for WK, NGK and  aSSK using the entire Reuters dataset. For aSSK; $ \lambda = 0.5 $\label{tab:full_data} }
+\caption{The ten best performing classes from \cite{lodhi} shown with our $ F_1 $ results for WK, NGK and  aSSK using the entire Reuters dataset. For aSSK; $ \lambda = 0.5, x = 3000$\label{tab:full_data} }
 \end{table}
 
 
