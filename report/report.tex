@@ -1,9 +1,11 @@
-\documentclass[10pt,a4paper,titlepage]{article}
+\documentclass[10pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{makeidx}
+\usepackage{titling}
+\usepackage{blindtext}
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{subfig}
@@ -14,9 +16,16 @@
 \author{Erik Rosvall, Viktor Karlsson, Lucas Grönlund \& Marcus Alsterman}
 \title{Machine Learning Advanced course \\ String Subsequence Kernel}
 
+
+
 %\setcounter{chapter}{1}
 \begin{document}
-	\maketitle
+	\begin{titlingpage}
+		\maketitle
+		\begin{abstract}
+			Trying to solve text classification creates many issues, mainly feature extraction and handling multi labeled data that might be unbalanced. This report looks at how a String Subsequence Kernel can solve the mentioned problems in conjunction with a SVM. This report goes through how Lodhi et al has presented and validated their algorithm with both recursive and approximate implementations. Lastly we present our own incremental improvement of the approximate String Subsequence Kernel by the use of additional halt conditions within the recursion. 
+		\end{abstract}
+	\end{titlingpage}
 	
 	\section{Introduction}
 	\input{introduction.tex}
