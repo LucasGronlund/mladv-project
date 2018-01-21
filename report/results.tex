@@ -1,5 +1,5 @@
 
-The results are presented in figure \ref{fig:alignment} and tables \ref{tab:subset_data}, \ref{tab:alignment} and \ref{tab:full_data}.
+The results are presented in figure \ref{fig:alignment}-\ref{fig:improved_assk} and tables \ref{tab:appendix_skk_ngk}-\ref{tab:appendix_ssk_n}
 
 Due to very high computational costs for some of the algorithms, both in time and memory, we were  not able to average over ten iterations as \cite{lodhi} did for every entry in the tables. We have clearly stated in the tables how many iterations were performed for that data. 
 
@@ -118,9 +118,9 @@ Due to very high computational costs for some of the algorithms, both in time an
 % 2 imgaes
 \begin{figure}[h]
 	\centering
-	\subfloat[Our results]{\includegraphics[height = 5cm]{../plots/Alignment_scores.pdf}}	
+	\subfloat[Our results]{\includegraphics[height = 5.5cm]{../plots/Alignment_scores.pdf}}	
 	\subfloat[Lohdi et al.'s]{\raisebox{0.40cm}%
-		{\includegraphics[height = 4.1cm]{../plots/Lodhi_alignment_score.png}}}%
+		{\includegraphics[height = 4.5cm]{../plots/Lodhi_alignment_score.png}}}%
 	\caption{Alignment scores for varying the number of vectors $ x $ in the subset $ \tilde{S} $. Lohdi et al.'s figure is shown for comparison.\label{fig:alignment}}
 \end{figure}
 %table for entire dataset
@@ -203,7 +203,11 @@ Due to very high computational costs for some of the algorithms, both in time an
 \end{wraptable}
 
 
-
-
+\begin{figure}
+	\centering
+	\subfloat[Alignment score between kernels from aSSK and our proposed improvement aSSK ]{\includegraphics[width=6 cm]{../plots/alignment_score_modification.pdf}}
+	\quad\subfloat[Time comparison between computation for our proposed improvment of aSSK and Lodhi et al.'s aSSK.]{\includegraphics[width=6 cm]{../plots/relative_time.pdf}}
+	\caption{Results when comparing our proposed improvement of the aSSK to the aSSK presented in \cite{lodhi}.\label{fig:improved_assk}}
+\end{figure}
 
 
