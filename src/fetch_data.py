@@ -54,10 +54,12 @@ def fullData():
 
 	return trainingData, trainingLabel, testData, testLabel
 
-def nrData(nr):
+def nrData(nr,shuffle=False):
 	data =[]
 	ids = reuters.fileids()
 	c=0
+	if shuffle:
+                random.shuffle(ids)
 	for i in ids:
 
                 data.append(_cleanData(reuters.raw(i)))
