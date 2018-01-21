@@ -112,9 +112,10 @@ Three metrics were used in the comparison between the kernel's performances; \te
 \subsection{Experimental procedure}
 With all algorithms and measures defined we can now turn to what results from Lohdi et al. we set out to replicate in more detail. First we studied how the sequence length impacted performance of both SSK and NGK while WK is by definition not effected by this parameter. These trials were, in parallel with Lohdi et al., only performed on a subset of the data due to computational cost. The subset consist of 470 documents (380 train and 90 test) from  4 classes; acq., earn, corn and crude. The split of train (test) documents between the classes were as follows: acq. 114 (25), earn 152 (40), corn 38 (15) and crude 76 (10). Secondly, we studied the SSK's performance when varying the decay factor $ \lambda $, again using the data subset. %$ \lambda \in [0.01, 0.05, 0.1, 0.5, 0.7, 0.9] $ were the values used. 
 
-We then studied the approximation, first studying how the number of vectors in the subset $ \tilde{S} $ effected the alignment score between the approximate kernel matrix and the exact one. Then, using a suitable subset $ \tilde{S} $, we compared the performance of the aSSK with both WK and NGK on the entire Reuters dataset.
+We then studied the approximation, first studying how the number of vectors in the subset $ \tilde{S} $ effected the alignment score between the approximate kernel matrix and the exact one. This test was, as in \cite{lodhi}, performed on the 100 first documents in the Reuters dataset. Then, using a suitable subset $ \tilde{S} $, we compared the performance of the aSSK with both WK and NGK on the entire Reuters dataset. 
 
-\subsection{Preprocessing of data}
+Finally we evaluate our proposed improvement and did again use the 100 first documents. We then measured the time for training, both using our improved aSSK and the normal aSSK. These results were averaged over 14 iterations.
+
 The dataset was preprocessed before training through  transforming the text into lower case and removal of all numbers and stop words. We used \texttt{nltk} for the list of these non-informative words.
 
 
