@@ -1,6 +1,5 @@
 
-\begin{table}[]
-	\centering
+\begin{table}[h]
 	\subfloat[Insert]{
 	\begin{tabular}{| c | c | c | c | c | c | }
 		\hline SSK & $ n $&$ \lambda  $& Precision & Recall & $ F_1 $   \\ \hline	
@@ -37,9 +36,9 @@
 		&& 0.7 & 0.90 & 0.90 &  0.90  (0.893)  \\
 		&& 0.9 & 0.39 & 1 &  0.56  (0.758)  \\\hline
 		
-		
-	\end{tabular}}
-\subfloat[Dickbut]{
+	
+	\end{tabular}\label{tab:ssk_varying_lambda}}
+	\subfloat[Dickbut]{
 	\begin{tabular}{| c | c | c | c | c | }
 		\hline NGK & $ n $ & Precision & Recall & $ F_1 $   \\ \hline
 		
@@ -79,9 +78,11 @@
 		
 		
 		
-\end{tabular}} 
-
-	\subfloat[here]{
+\end{tabular}\label{tab:ngk_varying_n}} 
+\caption{Effect on $ F_1 $-score when, in \protect\subref{tab:ssk_varying_lambda} varying $ \lambda $ for SSK and in \protect\subref{tab:ngk_varying_n} varying $ n $ for NGK. Both algorithms were trained using the subset of Reuters dataset.\label{tab:appendix_skk_ngk} }
+\end{table}
+\begin{table}
+	\centering
 	\begin{tabular}{| c | c | c | c | c | c | }
 		\hline SSK&$ \lambda $& $ n $ & Precision & Recall & $ F_1 $   \\ \hline
 		
@@ -136,12 +137,11 @@
 		
 		
 	\end{tabular}
-}
-
-	
 
 
-	\caption{dickbut inserted \label{tab:appendix}}
+
+
+	\caption{Full range of subsequence lengths used in \cite{lodhi}, who's  $ F_1 $-scores are shown in parentheses.  \label{tab:appendix_ssk_n}}
 \end{table} % This is the end tabular
 
 

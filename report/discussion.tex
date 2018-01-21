@@ -1,6 +1,6 @@
 %TODO Consequences from test runs
 \subsection{Performance on subset of Reuters dataset}
-We can in table \ref{tab:appendix} see the same pattern between our data and that presetned in \cite{lodhi};  for higher values of the sequence length $ n $ we have a clear decrease in performance. We had to, as mentioned in the results, limit the number of iterations performed because of computational time, which is why we in table \ref{tab:ngk_subset} and \ref{tab:ssk_subset} only have averages over the three best performing values of $ n $. What is worth mentioning here is that WK, in table \ref{tab:wk_subset}, performs consistently better than SSK, which only achieves tangential $ F_1 $-scores for two of the four classes. When then considering the computational time difference between the methods which with our implementation almost differed with two orders of magnitude in favor of WK, the practical limitation of SSK becomes apparent. 
+We can in table \ref{tab:appendix_skk_ngk} and \ref{tab:appendix_ssk_n} see the same pattern between our data and that presetned in \cite{lodhi}; for higher values of the sequence length $ n $ we have a clear decrease in performance for both NGK and SSK. We had to, as mentioned in the results, limit the number of iterations performed because of computational time, which is why we in table \ref{tab:ngk_subset} and \ref{tab:ssk_subset} only have averages over the three best performing values of $ n $, 3, 4 and 5. What is worth mentioning here is that WK, in table \ref{tab:wk_subset}, performs consistently better than SSK, which only achieves tangential $ F_1 $-scores for two of the four classes. When then considering the computational time difference between the methods which with our implementation almost differed with two orders of magnitude in favor of WK, the practical limitation of SSK becomes apparent. 
 %However, the general trend is still apparent, performance quickly decreases of for $ n > 6 $ for almost all classes in this subset of Reuters dataset. This was consistent across all configurations of the algorithm and the approximated version. 
 
 \subsection{Approximating string subsequence kernel}
@@ -11,6 +11,10 @@ Our alignment scores shown in figure \ref{fig:alignment} also proves that alread
 \subsection{Performance on entire Reuters dataset}
 %Interestingly, the results for SSK isn't super promising, we usually achieve tangential performance with either NGK and WK. 
 Using the entire Reuters dataset to train WK, NGK and aSSK we find in table \ref{tab:full_data} we find similar results as when only using the subset; WK performs better than both NGK and aSSK in a fraction of the time, even though WK is implemented in Python while aSSK is implemented in C++ which generally is a much faster language. 
+
+
+%Varying $ \lambda $ shows that SSK is not that sensitive to values of $ \lambda $. Generally we can see that unless you choose more extreme values, the SSK performs well.
+
 
 %This becomes painfully clear when we run the full dataset, where WK outperformed NGK and SSK on most categories at a fraction of the computation time, and that is with our approximation kernel exported to C++ and WK running completely in Python, which generally is a much slower programming language. 
 

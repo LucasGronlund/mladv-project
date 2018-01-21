@@ -5,7 +5,7 @@ Due to very high computational costs for some of the algorithms, both in time an
 We have clearly stated in the tables how many iterations were performed for that data. 
 
 
-\begin{table}
+\begin{table}[!hbt]
 	\centering
 	\subfloat[NGK performance for different subequence lengths $ n $.]{
 	\begin{tabular}{| c | c | c | c | c | } \hline
@@ -69,7 +69,7 @@ We have clearly stated in the tables how many iterations were performed for that
 \end{table}
 
 
-\begin{figure}
+\begin{figure}[!hbt]
 	\centering
 	\subfloat[Our results]{\includegraphics[height = 6.25cm]{../plots/Alignment_scores.pdf}}
 	\subfloat[Lohdi et al.'s]{\raisebox{0.57cm}%
@@ -77,7 +77,7 @@ We have clearly stated in the tables how many iterations were performed for that
 	\caption{Alignment scores for varying the number of vectors $ x $ in the subset $ \tilde{S} $. Lohdi et al.'s figure is shown for comparison.\label{fig:alignment}}
 \end{figure}
 
-\begin{table}
+\begin{table}[!hbt]
 	\centering
 	\begin{tabular}{| c | c | c | }\hline
 		aSSK & $ x $ = 1000 & $ x $ = 3000   \\ \hline
@@ -109,14 +109,3 @@ We have clearly stated in the tables how many iterations were performed for that
 \caption{The ten best performing classes from \cite{lodhi} shown with our $ F_1 $ results for WK, NGK and  aSSK using the entire Reuters dataset. For aSSK; $ \lambda = 0.5, x = 3000$\label{tab:full_data} }
 \end{table}
 
-
-\subsection{Eriks kommentarer}
-\begin{itemize}
-	\item We can clearly see that NGK performs well for small N, but considerably worse for larger N (see appendix)
-	
-	\item Like it's algorithmic cousin the NGK, it performs well for relative small k, but less well for larger k (again, see appendix for all data)
-	
-	\item  Varying $ \lambda $ shows that SSK is not that sensitive to values of $ \lambda $. Generally we can see that unless you choose more extreme values, the SSK performs well.
-	
-	\item Lodhi's results in parenthesis. This allows us to verify our implementation of the approximation kernel, but is not used for extensive results analysis.
-\end{itemize}
