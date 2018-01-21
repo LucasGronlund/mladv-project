@@ -50,7 +50,7 @@ To calculate the similarity between the documents \textit{fail} and \textit{sail
 
 To explicitly calculate all the features for documents present in the Reuters dataset would require impractical amounts of computations ($ \mathcal{O}(|\Sigma|^n) $), which is why \cite{lodhi} presents a recursive formulation for the kernel values. We will again present these as they were described in the paper.
 
-\subsubsection{Definition - Recursive computation of the subsequence kernel}
+\subsubsection{Definition - Recursive computation of the string subsequence kernel}
 \begin{align*}
 	K'_{0}(s,t) & = 1, for\ all\ s,t \\
 	K'_i(s,t) & = 0, if\ \min(|s|,|t|) < i \\
@@ -89,8 +89,8 @@ Here the subindex F indicates that the Frobenius inner product is used, defined 
 
 To generate $ \tilde{S} $ we followed \cite{lodhi}, first choosing the substring length $ n $, then counting all contiguous substrings of length $ n $ in all the documents and finally constructed $ \tilde{S} $ with the $ x $ most occurring substrings. Using the alignment measure between the approximated kernel matrix and the exact one, we studied the the effect the number of features had on the approximation. 
 
-\subsection{Proposed improvement of SSK}
-Despite both recursive programming implementation and approximative methods for SSK, it still has a high computational cost resulting in long training and testing times. We therefore propose a simple modification to the SSK in order to reduce both these times. 
+\subsection{Proposed improvement of the approximative SSK}
+Despite both recursive programming implementation and approximative methods for SSK, it still has a high computational cost resulting in long training and testing times. We therefore propose a simple modification to the aSSK in order to reduce both these times. 
 
 When searching for a subsequence in documents, there are cases when the length of such non-contiguous sequence is very large. Since this length then appears as the exponent of the decay factor $ \lambda $, the relevance of such a feature should approach zero when the length increases. We therefore introduced a \textit{cut-off} length, limiting our search and thus removing the influence from long subsequences. 
 
@@ -101,7 +101,7 @@ The n-gram kernel (NGK) transforms text documents to the feature space trough co
 %With this approach all information encoded in the word order in the document is lost. The method has nonetheless proven useful, as we will see later.
 
 \subsection{Word kernel}
-The word kernel (WK) transforms the documents to the feature space considering each word, a string separated by spaces and/or punctuation, as a feature. The value of each dimension in the feature space is calculated using a variant of \textit{tf-idf}, $ \log(1+tf) \cdot \log(n/df) $. Here \textit{tf} is the term frequency and \textit{df} is the document frequency while \textit{n} is the number of documents. 
+The word kernel (WK) transforms the documents to the feature space considering each word, a string separated by spaces and/or punctuation, as a feature. The value of each dimension in the feature space is calculated using a variant of \textit{tfidf}, $ \log(1+tf) \cdot \log(n/df) $. Here \textit{tf} is the term frequency and \textit{df} is the document frequency while \textit{n} is the number of documents. 
 
 %Lohdi et al. presents the word kernel (WK) used as a is a linear kernel measuring similarity between documents that are indexed by words using a variant of the \textit{tf-idf}, $ \log(1+tf) \cdot \log(n/df) $. Here tf is the term frequency and df is the document frequency while n is the number of documents. 
 

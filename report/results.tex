@@ -1,15 +1,21 @@
 
-The results are presented in figure \ref{fig:alignment}-\ref{fig:improved_assk} and tables \ref{tab:appendix_skk_ngk}-\ref{tab:appendix_ssk_n}
+The results are presented in figure \ref{fig:alignment}-\ref{fig:improved_assk} and tables \ref{tab:appendix_skk_ngk}-\ref{tab:appendix_ssk_n}. Due to very high computational costs for some of the algorithms, both in time and memory, we were  not able to average over ten iterations as \cite{lodhi} did for every entry in the tables. We have clearly stated in the tables how many iterations were performed for that data. 
 
-Due to very high computational costs for some of the algorithms, both in time and memory, we were  not able to average over ten iterations as \cite{lodhi} did for every entry in the tables. We have clearly stated in the tables how many iterations were performed for that data. 
-
+% 2 imgaes alignment
+\begin{figure}[!htb]	
+	\centering
+	\subfloat[Our results]{\includegraphics[height = 5.5cm]{../plots/Alignment_scores.pdf}}	
+	\subfloat[Lohdi et al.'s]{\raisebox{0.40cm}%
+		{\includegraphics[height = 4.5cm]{../plots/Lodhi_alignment_score.png}}}%
+	\caption{Alignment scores for varying the number of vectors $ x $ in the subset $ \tilde{S} $. Lohdi et al.'s figure is shown for comparison.\label{fig:alignment}}
+\end{figure}
 
 
 %2 big tables
-\begin{table}
+\begin{table}[!htb]
 	\small
 	\centering
-	\subfloat[n=5. Performance for SSK for different $ lambda $, averaged over 10 iterations. Lohdi et al.'s values are presented in parenteses. ]{\raisebox{0 cm}%
+	\subfloat[n=5. Performance for SSK for different $ \lambda $, averaged over 10 iterations. Lohdi et al.'s values are presented in parenteses. ]{\raisebox{0 cm}%
 		{\begin{tabular}{| c | c | c | c | c | }
 			\hline SSK &$ \lambda  $& Precision & Recall & $ F_1 $   \\ \hline	
 			
@@ -47,7 +53,7 @@ Due to very high computational costs for some of the algorithms, both in time an
 			
 			
 		\end{tabular}\label{tab:ssk_varying_lambda}}}\quad
-	\subfloat[Dickbut]{
+	\subfloat[Performance for NGK for different $ n $, averaged over 4 iterations. Lohdi et al.'s values are presented in parenteses.]{
 		\begin{tabular}{| c | c | c | c | c | }
 			\hline NGK & $ n $ & Precision & Recall & $ F_1 $   \\ \hline
 			
@@ -88,14 +94,14 @@ Due to very high computational costs for some of the algorithms, both in time an
 			
 			
 		\end{tabular}\label{tab:ngk_varying_n}} 
-	\caption{Effect on $ F_1 $-score when, in \protect\subref{tab:ssk_varying_lambda} varying $ \lambda $ for SSK and in \protect\subref{tab:ngk_varying_n} varying $ n $ for NGK. Both algorithms were trained using the subset of Reuters dataset.\label{tab:appendix_skk_ngk} }
+	\caption{Effect on $ F_1 $-score when, in \protect\subref{tab:ssk_varying_lambda} varying $ \lambda $ for SSK and in \protect\subref{tab:ngk_varying_n} varying $ n $ for NGK. Both algorithms were trained using the subset of Reuters dataset. \label{tab:appendix_skk_ngk} }
 \end{table}
 
 %small wk table
-\begin{table}
+\begin{table}[!htb]
 	\centering
 	\small
-	\subfloat[WK performance results, averaged over 10 iterations. Numbers in parenthesis are reference value from \cite{lodhi}]{
+	\subfloat[WK performance results, averaged over 10 iterations. Numbers in parenthesis are reference value from \cite{lodhi}.]{
 		\begin{tabular}{| c | c | c | c | } \hline
 			WK  & Precision & Recall & $ F_1 $   \\ \hline	
 			acq &  0.974  & 0.930  & 0.951 (0.802) \\ \hline
@@ -103,7 +109,7 @@ Due to very high computational costs for some of the algorithms, both in time an
 			corn &   0.992  & 0.867  &  0.923 (0.762) \\ \hline
 			crude &   0.946  & 0.957  &  0.948 (0.904) \\ \hline	
 		\end{tabular}\label{tab:wk_subset}}\hspace{2 cm}
-		\subfloat[F1 performance of the approximative SSK using 1000 and 3000 vectors in $ \tilde{S} $. $ n = 5 $ and $ \lambda = 0.5 $. Results from \cite{lodhi} is presented in parenthesis for comparison.\label{tab:alignment}]{
+		\subfloat[$ F_1 $ performance of the approximative SSK using 1000 and 3000 vectors in $ \tilde{S} $. $ n = 5 $ and $ \lambda = 0.5 $. Results from \cite{lodhi} is presented in parenthesis for comparison.\label{tab:alignment}]{
 		\begin{tabular}{| c | c | c | }\hline
 			aSSK & $ x $ = 1000 & $ x $ = 3000   \\ \hline
 			acq & 0.96 (0.88)& 0.97 (0.85)\\ \hline
@@ -111,20 +117,13 @@ Due to very high computational costs for some of the algorithms, both in time an
 			ship & 0.43 (0.10) & 0.63  (0.53) \\ \hline
 			corn & 0.84 (0.15) & 0.89 (0.65) \\ \hline
 	\end{tabular} }
-\caption{Reult tabes}
+\caption{Performance for WK and aSSK.}
 
 \end{table}
 
-% 2 imgaes
-\begin{figure}[h]
-	\centering
-	\subfloat[Our results]{\includegraphics[height = 5.5cm]{../plots/Alignment_scores.pdf}}	
-	\subfloat[Lohdi et al.'s]{\raisebox{0.40cm}%
-		{\includegraphics[height = 4.5cm]{../plots/Lodhi_alignment_score.png}}}%
-	\caption{Alignment scores for varying the number of vectors $ x $ in the subset $ \tilde{S} $. Lohdi et al.'s figure is shown for comparison.\label{fig:alignment}}
-\end{figure}
+
 %table for entire dataset
-\begin{table}
+\begin{table}[!htb]
 	\centering
 	\small	
 	\begin{tabular}{| c | c | c | c | c | c | c | c |}\hline
@@ -141,11 +140,20 @@ Due to very high computational costs for some of the algorithms, both in time an
 		wheat & 0.79 & 0.86 &  0.84 & 0.8 & 0.8 & 0.8 & 0.76 \\ \hline
 		corn & 0.86 & 0.73 &  0.85 & 0.65 & 0.78 & 0.72 & 0.6 \\ \hline	
 	\end{tabular}
-	\caption{The ten best performing classes from \cite{lodhi} shown with our $ F_1 $ results for WK, NGK and  aSSK using the entire Reuters dataset. For aSSK; $ \lambda = 0.5, x = 3000$\label{tab:full_data} }
+	\caption{The ten best performing classes from \cite{lodhi} shown with our $ F_1 $ results for WK, NGK and  aSSK using the entire Reuters dataset. For aSSK; $ \lambda = 0.5, x = 3000$\label{tab:full_data}. }
 \end{table}
 
+% proffs implementation
+\begin{figure}[!htb]
+	\centering
+	\subfloat[Alignment score between kernels from Lohdi et al.'s aSSK and our proposed improvement of aSSK. ]{\includegraphics[width=6 cm]{../plots/alignment_score_modification.pdf}}
+	\quad\subfloat[Time comparison between computation for our proposed improvment of aSSK and Lodhi et al.'s aSSK.]{\includegraphics[width=6 cm]{../plots/relative_time.pdf}}
+	\caption{Results when comparing our proposed improvement of the aSSK to the aSSK presented in \cite{lodhi}.\label{fig:improved_assk}}
+\end{figure}
+
 %1 big table
-\begin{wraptable}[35]{r}{8cm}
+\begin{wraptable}[32]{r}{8cm}
+	
 	\centering
 	\small
 	
@@ -203,11 +211,6 @@ Due to very high computational costs for some of the algorithms, both in time an
 \end{wraptable}
 
 
-\begin{figure}
-	\centering
-	\subfloat[Alignment score between kernels from aSSK and our proposed improvement aSSK ]{\includegraphics[width=6 cm]{../plots/alignment_score_modification.pdf}}
-	\quad\subfloat[Time comparison between computation for our proposed improvment of aSSK and Lodhi et al.'s aSSK.]{\includegraphics[width=6 cm]{../plots/relative_time.pdf}}
-	\caption{Results when comparing our proposed improvement of the aSSK to the aSSK presented in \cite{lodhi}.\label{fig:improved_assk}}
-\end{figure}
 
 
+\pagebreak
