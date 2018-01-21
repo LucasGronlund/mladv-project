@@ -1,18 +1,19 @@
 
-\subsection{Support Vector Machine}
-The SVM is a binary classifier separating two classes of data with a maximum margin decision boundary. Since this is not of central interest in this article or \cite{lodhi}, we suppose the details of this algorithm to be known. The algorithm can be formulated in a way such that the training features only occur in inner products with other training feature vectors, which often is called the \textit{dual formulation}. When the problem is formulated in this way the kernel trick can be used, which lets us avoid having to explicitly transform our input data into the kernel space. 
+\subsection{Support vector machine}
+The SVM is a binary classifier separating two classes of data with a \textit{maximum margin decision boundary}. Since this is not of central interest in this article or \cite{lodhi}, we suppose the details of this algorithm to be known. %The algorithm can be formulated in a way such that the training features only occur in inner products with other training feature vectors, which often is called the \textit{dual formulation}. When the problem is formulated in this way the kernel trick can be used, which lets us avoid having to explicitly transform our input data into the kernel space. 
 
-Since the Reuters dataset have text documents assigned to multiple classes, a problem often called\textit{ multi-label-} or \textit{vector output classification}, the SVM cannot be used directly since it is a binary classifier. To deal with this issue we implemented a \textit{one-vs-rest} approach. Thus, we train one classifier for each class with data from that class regarded as positive samples and the rest of the dataset as negative samples. This algorithm was imported from the \texttt{sklean} package in python. 
+Since the Reuters dataset have text documents assigned to multiple classes, a problem often called\textit{ multi-label-} or \textit{vector output classification}, the SVM cannot be used directly since it is a binary classifier. To deal with this issue we implemented a \textit{one-vs-rest} approach. Thus, we train one classifier for each class with data from that class regarded as positive samples and the rest of the dataset as negative samples. This algorithm was imported from the \texttt{Sklearn}. 
 
 \subsection{String subsequence kernel}
-\cite{lodhi} proposes a feature extraction method for text documents, extending the n-gram approach to features also being non-contiguous substrings. The feature vectors for each document is thus created through first generating all such subsequences, from all documents in the dataset, of length $ k $. Each such substring is regarded as a dimension of the feature space. 
+Lohdi et al. proposes a feature extraction method for text documents, extending the n-gram approach to features also being non-contiguous substrings. The feature vectors for each document is thus created through first generating all such subsequences from all documents in the dataset of length $ n $. Each such substring is regarded as a dimension of the feature space. 
 
-The transformation of a document to this feature space is then performed "simply" trough finding all occurrences of these subsequences and weighing them according to how compactly the sequence is embedded in the text. This is handled through the introduction of a \textit{decay factor} $ \lambda \in (0,1) $, which lets us put smaller emphasis on less compactly embedded subsequences than ones more compactly embedded in the document. An example of this, presented in \cite{lodhi}, is if we consider the subsequence \textbf{c-a-r} which is more compactly found in the document '\textbf{car}d' than in   '\textbf{c}ust\textbf{ar}d', giving the former a value of $ \lambda^3 $ and the latter $ \lambda^6 $, where the exponent directly corresponds to the length of the sequence for which the subsequence is contained.
+The transformation of a document to this feature space is then performed "simply" through finding all occurrences of these subsequences and weighing them according to how compactly the sequence is embedded in the text. This is handled through the introduction of a \textit{decay factor} $ \lambda \in (0,1) $, which lets us put smaller emphasis on less compactly embedded subsequences in the document than ones more compactly embedded. An example of this can be found in table \ref{tab:exempel}. %, presented in \cite{lodhi}, is if we consider the subsequence \textbf{c-a-r} which is more compactly found in the document '\textbf{car}d' than in   '\textbf{c}ust\textbf{ar}d', giving the former a value of $ \lambda^3 $ and the latter $ \lambda^6 $, where the exponent directly corresponds to the length of the sequence for which the subsequence is contained.
 
-To not introduce unnecessary confusion we will present the definition of a SSK exactly as the definition presented in \cite{lodhi}. 
 
 \subsubsection{Definition - String subsequence kernel}
-Let $ \Sigma $ be a finite alphabet. A string is a finite seqence of characters from $ \Sigma $, including the empty sequence. For strings $s,t$ we denote by $|s|$ the length of the string $ s = s_1 \dots s_{|s|} $, and by $ st $ the string obtained by concatenating the strings $ s $ and $ t $. The string $ s[i:j] $ is the substring $ s_i, \dots s_j $ of $ s $. We say that $ u $ us a subsequence of $ s $, if there exist indices $ \boldsymbol{i} = (i_1, \dots, i_{|u|}) $, with $ 1 \leq i_1 < \dots < i_{|u|} \leq |s| $, such that $ u_j = s_{i_{j}}$, for $ j = 1, \dots, |u|, $ or $ u = s[\boldsymbol{i}] $ for short. The length $ l(\boldsymbol{i}) $ of the subsequence in $ s $ is $ i_{|u|} - i_1 +1 $. We denote by $ \Sigma^n $ the set of all finite strings of length $ n $, and by $ \Sigma^* $ the set of all strings 
+To not introduce unnecessary confusion we will present the definition of a SSK exactly as the definition presented in \cite{lodhi}. 
+
+Let $ \Sigma $ be a finite alphabet. A string is a finite sequence of characters from $ \Sigma $, including the empty sequence. For strings $s,t$ we denote by $|s|$ the length of the string $ s = s_1 \dots s_{|s|} $, and by $ st $ the string obtained by concatenating the strings $ s $ and $ t $. The string $ s[i:j] $ is the substring $ s_i, \dots s_j $ of $ s $. We say that $ u $ us a subsequence of $ s $, if there exist indices $ \boldsymbol{i} = (i_1, \dots, i_{|u|}) $, with $ 1 \leq i_1 < \dots < i_{|u|} \leq |s| $, such that $ u_j = s_{i_{j}}$, for $ j = 1, \dots, |u|, $ or $ u = s[\boldsymbol{i}] $ for short. The length $ l(\boldsymbol{i}) $ of the subsequence in $ s $ is $ i_{|u|} - i_1 +1 $. We denote by $ \Sigma^n $ the set of all finite strings of length $ n $, and by $ \Sigma^* $ the set of all strings 
 \begin{equation}\label{eq:all_Strings}
 \Sigma^* = \bigcup^{\infty}_{n=0}\Sigma^n
 \end{equation}
@@ -23,11 +24,11 @@ We now define the feature spaces $ F_n = \mathbb{R}^{\Sigma^{n}} $. The feature 
 for some $ \lambda \in (0,1) $. These features measure the number of occurrences of subsequences in the string $ s $ weighting them according to their lenghts. Hence, the inner product of the feature vectors for two strings $ s $ and $ t $ give a sum over all common subsequences weighted according to their frequency of occurrence and lengths
 \begin{align*}\label{key}
 K_n(s,t) &= \sum_{u\in\Sigma^n} \langle \phi_u(s) \cdot \phi_u(t) \rangle = \sum_{u \in \Sigma^n} \sum_{\boldsymbol{i}:u=s[\boldsymbol{i}]} \lambda^{l(\boldsymbol{i})} \sum_{\boldsymbol{j}:u=t[\boldsymbol{j}]} \lambda^{l(\boldsymbol{j})} \\
-& =  \sum_{u \in \Sigma^n} \sum_{\boldsymbol{i}:u=s[\boldsymbol{i}]}  \sum_{\boldsymbol{j}:u=t[\boldsymbol{j}]} \lambda^{l(\boldsymbol{i}) + l(\boldsymbol{j})}
+& =  \sum_{u \in \Sigma^n} \sum_{\boldsymbol{i}:u=s[\boldsymbol{i}]}  \sum_{\boldsymbol{j}:u=t[\boldsymbol{j}]} \lambda^{l(\boldsymbol{i}) + l(\boldsymbol{j})}.
 \end{align*}
 
 
-To prove our understanding of this definition we construct a unique example, which also illustrates how the feature vectors look. Consider two documents containing the words \textit{fail} or \textit{sail}. 
+To give an example, which also illustrates how the feature vectors look, consider two documents containing the words \textit{fail} or \textit{sail} with subsequence length $ n=2 $. 
 
 \begin{table}[h]
 	\centering
@@ -42,12 +43,12 @@ To prove our understanding of this definition we construct a unique example, whi
 	$\phi(sail)$ & 0 & 0 & 0 & $\lambda^2$ & $\lambda^3$ & $\lambda^2$ & $\lambda^2$ & $\lambda^3$ & $\lambda^4$ & 0 & 0 & 0 & 0 \\ 
 	\hline 
 \end{tabular} 
-\caption{Feature vectors for two simple documents.}
+\caption{Feature vectors for two simple documents with $ n=2 $.\label{tab:exempel}}
 \end{table}
 
-To calculate the similarity between the documents \textit{fail} and \textit{sail} we simply calculate the inner product between their respective feature vectors, resulting in the kernel value $ K_2(fail,sail)  = 2\lambda^4 + \lambda^6 $, where the subindex represent the subsequence length $ n $. An other example which we later used to prove that our implementation of the SSK was correct was the kernel values \cite{lodhi} presents for the documents \textit{'science is organized knowledge'} and \textit{'wisdom is organized life'}. These were: $ K_1 = 0.580 $, $ K_2 = 0.580$, $ K_3 = 0.478, K_4=0.439, K_5 = 0.406, K_6 = 0.370 $.
+To calculate the similarity between the documents \textit{fail} and \textit{sail} we simply calculate the inner product between their respective feature vectors, resulting in the kernel value $ K_2(fail,sail)  = 2\lambda^4 + \lambda^6 $, where the subindex represent the subsequence length $ n $. Another example which we used to control the correctness of our implementation of the SSK was the kernel values for the documents \textit{'science is organized knowledge'} and \textit{'wisdom is organized life'}. These were presented in \cite{lodhi} as: $ K_1 = 0.580 $, $ K_2 = 0.580$, $ K_3 = 0.478, K_4=0.439, K_5 = 0.406, K_6 = 0.370 $.
 
-To explicitly calculate all the features for documents present in the Reuters dataset would require impractical amounts of computations, which is why \cite{lodhi} presents a recursive formulation for the kernel values. We will again present these as they were in the paper, since we followed them exactly in our implementation. 
+To explicitly calculate all the features for documents present in the Reuters dataset would require impractical amounts of computations ($ \mathcal{O}(|\Sigma|^n) $), which is why \cite{lodhi} presents a recursive formulation for the kernel values. We will again present these as they were described in the paper.
 
 \subsubsection{Definition - Recursive computation of the subsequence kernel}
 \begin{align*}
@@ -57,7 +58,7 @@ To explicitly calculate all the features for documents present in the Reuters da
 	K'_i(sx,t) & = \lambda K'_i(s,t) + \sum_{j:t_j=x} K'_{i-1}(s,t[1:j-1])\lambda^{|t|-j+2}, \hspace{15pt} i = 1, \dots n-1 \\	
 	K_{n}(sx,t) & = K_n(s,t) + \sum_{j:t_j = x}K'_n-1(s,t[1:j-1])\lambda^2
 \end{align*}  
-This recursive formulation leaves the computational complexity at $ \mathcal{O}(n|s||t|^2]) $ which can be improved using the efficient computation \cite{lodhi} presents, through first evaluating
+This recursive formulation leaves the computational complexity at $ \mathcal{O}(n|s||t|^2) $ which can be improved using the efficient computation \cite{lodhi} presents, through first evaluating
 \begin{equation*}\label{key}
 K''_i(sx,t) = \sum_{j:t_j = x}K'_{i-1}(s,t[1:j-1])\lambda^{|t|-j+2}.
 \end{equation*}
@@ -65,7 +66,7 @@ Observing that $ K'_i(s,t) $ can be evaluated with the recursion:
 \begin{equation*}\label{key}
 K'_i(sx,t) = \lambda K'_i(s,t) + K''_i(sx,t)
 \end{equation*}
-one can then observe that $ K''_i(sx,tu) = \lambda^{|u|}K''_i(sx,t)$, in the case that $ x $ does not occur in $ u $, and otherwise 
+One can then observe that $ K''_i(sx,tu) = \lambda^{|u|}K''_i(sx,t)$, in the case that $ x $ does not occur in $ u $, and otherwise 
 \begin{equation*}\label{key}
 K''_i(sx,tx) = \lambda \left( K''_i(sx,t) + \lambda K'_{i-1}(s,t) \right).
 \end{equation*} 
@@ -74,50 +75,46 @@ With this implementation the computational complexity reduces to $ \mathcal{O}(n
 
 
 \subsubsection{Approximating string subsequence kernel}
-To test SSK on the entire Reuters dataset an approximative approach is needed, we call this aSSK. This is enabled through the general empirical kernel map presented in \cite{Scholkopf} which states that if we have a set $ S = \{s_i\} $ of vectors such that these vectors, when transformed into the kernel space, are both orthogonal and span the entire kernel space (that is $ \mathcal{K}(s_i,s_j) = C\delta_{ij} $), we can write the kernel value for any other two feature vectors
+To test SSK on the entire Reuters dataset an approximative approach is needed, we call this \textit{aSSK}. This is enabled through the general empirical kernel map presented in \cite{Scholkopf} which states that if we have a set $ S = \{s_i\} $ of vectors such that these vectors, when transformed into the kernel space, are both orthogonal and span the entire kernel space (that is, $ \mathcal{K}(s_i,s_j) = C\delta_{ij} $), we can write the kernel value for any other two feature vectors
 \begin{equation}\label{eq:kernel_approx}
-\mathcal{K}(x,z) = \dfrac{1}{C}\sum_{s_i \in S}\mathcal{K}(x,s_i)\mathcal{K}(z,s_i)
+\mathcal{K}(x,z) = \dfrac{1}{C}\sum_{s_i \in S}\mathcal{K}(x,s_i)\mathcal{K}(z,s_i).
 \end{equation}
 
-If we instead of constructing a set $ S $ with full cardinality limit ourselves to only choosing a subset $ \tilde{S} \subset S $ we can approximate the true kernel value with fewer computations. How 'close' this approximation $ \mathcal{K} $ is to the true kernel matrix $ K $ can be measured through the alignment of the two matrices, defined as
+If we instead of constructing a set $ S $ with full cardinality limit ourselves to only choosing a subset $ \tilde{S} \subset S $ we can approximate the true kernel value with fewer computations. How similar this approximation $ \mathcal{K} $ is to the true kernel matrix $ K $ can be measured through the \textit{alignment} of the two matrices, defined as
 
 \begin{equation}\label{key}
 A(K,\mathcal{K}) = \dfrac{\langle K, \mathcal{K}\rangle_{F}}{\sqrt{\langle \mathcal{K}, \mathcal{K}\rangle_{F} \langle K, K\rangle_{F} }}
 \end{equation}
-Here the subindex F indicates that the inner product is Frobenius normed defined as $ \langle K_1,K_2 \rangle_{F} = \sum_{i}\sum_{j}K_1(x_i,x_j)K_2(x_i,x_j) $.
+Here the subindex F indicates that the Frobenius inner product is used, defined as $ \langle K_1,K_2 \rangle_{F} = \sum_{i}\sum_{j}K_1(x_i,x_j)K_2(x_i,x_j) $.
 
-To generate $ \tilde{S} $ we followed \cite{lodhi}, first choosing the substring length $ n $, then counting all contiguous substrings of length $ n $ in all the documents and finally constructed $ \tilde{S} $ with the x most occurring substrings. Using the alignment measure between the approximated kernel matrix and the exact one, we studied the the effect the number of features had on the approximation. 
+To generate $ \tilde{S} $ we followed \cite{lodhi}, first choosing the substring length $ n $, then counting all contiguous substrings of length $ n $ in all the documents and finally constructed $ \tilde{S} $ with the $ x $ most occurring substrings. Using the alignment measure between the approximated kernel matrix and the exact one, we studied the the effect the number of features had on the approximation. 
 
 \subsection{Proposed improvement of SSK}
-Despite both dynamic programming implementation and approximative methods for SSK, it still is has a high computational cost resulting in long training and testing times which in some cases renders it useless. We therefore propose a simple modification to the SSK in order to reduce both these times. 
+Despite both recursive programming implementation and approximative methods for SSK, it still has a high computational cost resulting in long training and testing times. We therefore propose a simple modification to the SSK in order to reduce both these times. 
 
-When searching for a subsequence in a large document, there are cases when the length of such non-contiguous sequence is very large. Since this length then appears as the exponent of the decay factor $ \lambda $, the relevance of such a feature should approach zero when the length increases. We therefore introduced a \textit{cut-off} length, limiting our search and thus removing the influence from long subsequences. 
+When searching for a subsequence in documents, there are cases when the length of such non-contiguous sequence is very large. Since this length then appears as the exponent of the decay factor $ \lambda $, the relevance of such a feature should approach zero when the length increases. We therefore introduced a \textit{cut-off} length, limiting our search and thus removing the influence from long subsequences. 
 
 
 \subsection{N-gram kernel}
-The n-gram kernel (NGK) transforms text documents to the feature space trough  considering contiguous subsequences of length $ n $, called \textit{n-grams}. The value of each dimension in the feature space of a document is thus the number of occurrences of that n-gram in the document. 
+The n-gram kernel (NGK) transforms text documents to the feature space trough considering contiguous subsequences of length $ n $, called \textit{n-grams}. The value of each dimension in the feature space of a document is thus proportional to the number of occurrences of that n-gram in the document. 
 
-With this approach all information encoded in the word order in the document is lost. The method has nonetheless proven useful, as we will see later.
+%With this approach all information encoded in the word order in the document is lost. The method has nonetheless proven useful, as we will see later.
 
 \subsection{Word kernel}
 The word kernel (WK) transforms the documents to the feature space considering each word, a string separated by spaces and/or punctuation, as a feature. The value of each dimension in the feature space is calculated using a variant of \textit{tf-idf}, $ \log(1+tf) \cdot \log(n/df) $. Here \textit{tf} is the term frequency and \textit{df} is the document frequency while \textit{n} is the number of documents. 
 
 %Lohdi et al. presents the word kernel (WK) used as a is a linear kernel measuring similarity between documents that are indexed by words using a variant of the \textit{tf-idf}, $ \log(1+tf) \cdot \log(n/df) $. Here tf is the term frequency and df is the document frequency while n is the number of documents. 
 
-\subsection{Metric for performance}
-Three metrics were used in the comparison between the kernels performance; \textit{precision}, \textit{recall} and \textit{$ F_1 $-score}. The precision for each class is the ratio between \textit{the number of correctly classified documents belonging to this class} and \textit{the total number of classified documents}, while recall for a class is the ratio between \textit{the number of correctly classified documents in to that class} and \textit{the total number of documents in that class}. The $ F_1 $-score is then calculated using these metrics, $ P $ for precision and $ R $ for recall,  through 
-\begin{equation*}\label{key}
-F_1 = 2\dfrac{PR}{P+R}
-\end{equation*}
+\subsection{Performance metrics}
+Three metrics were used in the comparison between the kernel's performances; \textit{precision}, \textit{recall} and \textit{$ F_1 $-score}. The precision for each class is the ratio between \textit{the number of correctly classified documents belonging to this class} and \textit{the total number of classified documents}, while recall for a class is the ratio between \textit{the number of correctly classified documents in to that class} and \textit{the total number of documents in that class}. The $ F_1 $-score is then calculated using these metrics, $ P $ for precision and $ R $ for recall, through $F_1 = 2\frac{PR}{P+R}$
 
-\subsection{Actual experiment}
-With all algorithms and measures defined we can now turn to what results from Lohdi et al. we set out to replicate in more detail. First we studied how the sequence length impacted performance for both SSK and NGK while WK is from its definition not effected by this parameter. These trails were, in parallel with Lohdi et al., only performed on a subset of the data since even with the efficient implementation of the SSK, the algorithm is still computationally costly. The subset consisted of of 470 documents (380 train and 90 test) from  4 classes; acq., earn, corn and crude. The split of train (test) documents between the classes were as follows: acq. 114 (25), earn 152 (50), corn 38 (15) and crude 76 (10).
 
-Secondly, we studied the SSK's performance when varying the decay factor $ \lambda $, again using the data subset. $ \lambda \in [0.01, 0.05, 0.1, 0.5, 0.7, 0.9] $ were the values used. 
+\subsection{Experimental procedure}
+With all algorithms and measures defined we can now turn to what results from Lohdi et al. we set out to replicate in more detail. First we studied how the sequence length impacted performance of both SSK and NGK while WK is by definition not effected by this parameter. These trials were, in parallel with Lohdi et al., only performed on a subset of the data due to computational cost. The subset consist of 470 documents (380 train and 90 test) from  4 classes; acq., earn, corn and crude. The split of train (test) documents between the classes were as follows: acq. 114 (25), earn 152 (40), corn 38 (15) and crude 76 (10). Secondly, we studied the SSK's performance when varying the decay factor $ \lambda $, again using the data subset. %$ \lambda \in [0.01, 0.05, 0.1, 0.5, 0.7, 0.9] $ were the values used. 
 
-We then turned to the approximation, first studying how the number of vectors in the subset $ \tilde{S} $ effected the alignment score between the approximate kernel matrix and the exact one. Then, using a suitable approximation of the kernel matrix, we compared the performance of the (approximative) SSK with both WK and NGK on the entire Reuters dataset. We varied the sequence length $ n\in [3,8] $.  
+We then studied the approximation, first studying how the number of vectors in the subset $ \tilde{S} $ effected the alignment score between the approximate kernel matrix and the exact one. Then, using a suitable subset $ \tilde{S} $, we compared the performance of the aSSK with both WK and NGK on the entire Reuters dataset.
 
 \subsection{Preprocessing of data}
-The Reuters dataset was preprocessed before training, through removing all stop words in each document. We used the python package \texttt{nltk} for the list of these non-informative words.
+The dataset was preprocessed before training through  transforming the text into lower case and removal of all numbers and stop words. We used \texttt{nltk} for the list of these non-informative words.
 
 
