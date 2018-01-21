@@ -87,7 +87,13 @@ A(K,\mathcal{K}) = \dfrac{\langle K, \mathcal{K}\rangle_{F}}{\sqrt{\langle \math
 Here the subindex F indicates that the inner product is Frobenius normed defined as $ \langle K_1,K_2 \rangle_{F} = \sum_{i}\sum_{j}K_1(x_i,x_j)K_2(x_i,x_j) $.
 
 To generate $ \tilde{S} $ we followed \cite{lodhi}, first choosing the substring length $ n $, then counting all contiguous substrings of length $ n $ in all the documents and finally constructed $ \tilde{S} $ with the x most occurring substrings. Using the alignment measure between the approximated kernel matrix and the exact one, we studied the the effect the number of features had on the approximation. 
-. 
+
+\subsection{Proposed improvement of SSK}
+Despite both dynamic programming implementation and approximative methods for SSK, it still is has a high computational cost resulting in long training and testing times which in some cases renders it useless. We therefore propose a simple modification to the SSK in order to reduce both these times. 
+
+When searching for a subsequence in a large document, there are cases when the length of such non-contiguous sequence is very large. Since this length then appears as the exponent of the decay factor $ \lambda $, the relevance of such a feature should approach zero when the length increases. We therefore introduced a \textit{cut-off} length, limiting our search and thus removing the influence from long subsequences. 
+
+
 \subsection{N-gram kernel}
 The n-gram kernel (NGK) transforms text documents to the feature space trough  considering contiguous subsequences of length $ n $, called \textit{n-grams}. The value of each dimension in the feature space of a document is thus the number of occurrences of that n-gram in the document. 
 
@@ -113,6 +119,8 @@ We then turned to the approximation, first studying how the number of vectors in
 
 \subsection{Preprocessing of data}
 The Reuters dataset was preprocessed before training, through removing all stop words in each document. We used the python package \texttt{nltk} for the list of these non-informative words.
+
+
 
 
 \subsection{Possible todos}
