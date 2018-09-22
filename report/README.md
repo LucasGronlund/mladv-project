@@ -1,2 +1,2 @@
 # Report
-This folder is used for our glorious LaTeX report.
+This folder contains the LaTeX report.
